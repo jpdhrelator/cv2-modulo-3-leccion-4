@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🍕 Reto: La Caja Feliz</title>
+<style>
+  :root{
+    --bg:#0f172a; --text:#e2e8f0; --muted:#94a3b8;
+    --panel:#1e293b; --panel2:#0f172a; --border:#334155;
+    --accent:#38bdf8; --pink:#f472b6; --gold:#fbbf24; --green:#86efac;
+    --tools-bg:#082f49; --tools-border:#0ea5e9; --tag-text-css:#fbbf24; --tag-text-html:#f472b6;
+    --hint-text:#cbd5e1; --code:#fbbf24;
+  }
+  html[data-theme="light"]{
+    --bg:#f1f5f9; --text:#1e293b; --muted:#64748b;
+    --panel:#ffffff; --panel2:#f8fafc; --border:#e2e8f0;
+    --accent:#0284c7; --pink:#db2777; --gold:#b45309; --green:#15803d;
+    --tools-bg:#e0f2fe; --tools-border:#0ea5e9; --tag-text-css:#b45309; --tag-text-html:#db2777;
+    --hint-text:#475569; --code:#b45309;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  body{font-family:system-ui,Segoe UI,Roboto,sans-serif;margin:0;background:var(--bg);color:var(--text);line-height:1.65;transition:background .25s,color .25s}
+  .wrap{max-width:940px;margin:0 auto;padding:24px}
+  header{background:linear-gradient(135deg,#7c3aed,#db2777);border-radius:16px;padding:32px;text-align:center;margin-bottom:24px;box-shadow:0 12px 40px rgba(124,58,237,.3);color:#fff}
+  header h1{margin:0 0 6px;font-size:2rem}
+  header p{margin:0;color:#f5d0fe}
+  .pill{display:inline-block;background:rgba(255,255,255,.18);padding:4px 14px;border-radius:999px;font-size:.8rem;font-weight:700;margin-top:12px}
+
+  .hud{position:sticky;top:0;z-index:10;background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:14px 20px;margin-bottom:24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+  .hud .score{font-size:1.4rem;font-weight:800;color:var(--gold)}
+  .bar{flex:1;min-width:140px;height:14px;background:var(--panel2);border-radius:999px;overflow:hidden;border:1px solid var(--border)}
+  .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#22c55e,#84cc16);transition:width .4s}
+  .rank{font-weight:700;color:var(--accent)}
+  .btn{background:var(--border);color:var(--text);border:none;padding:8px 14px;border-radius:8px;cursor:pointer;font-weight:600}
+  .btn:hover{filter:brightness(1.15)}
+
+  .historia{background:var(--panel);border-left:4px solid var(--gold);border-radius:10px;padding:18px 22px;margin-bottom:24px}
+
+  .mision{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:18px;transition:.2s}
+  .mision.done{border-color:#22c55e}
+  .mision h2{margin:0 0 4px;font-size:1.15rem;color:var(--pink);display:flex;align-items:center;gap:10px}
+  .lvl{font-size:.7rem;font-weight:700;padding:2px 9px;border-radius:999px;background:#0ea5e9;color:#082f49}
+  .lvl.easy{background:#22c55e;color:#052e16}
+  .lvl.mid{background:#f59e0b;color:#451a03}
+  .lvl.hard{background:#ef4444;color:#450a0a}
+  .practica{font-size:.8rem;color:var(--muted);margin:0 0 12px}
+  .mision h4{margin:14px 0 4px;font-size:.82rem;letter-spacing:.04em;text-transform:uppercase;color:var(--accent)}
+  .mision ol,.mision ul{margin:6px 0 0;padding-left:22px}
+  .mision li{margin-bottom:5px}
+  .ok{list-style:none;margin-left:-6px}
+  .ok li::before{content:"✔ ";color:#22c55e;font-weight:800}
+  .pts{float:right;color:var(--gold);font-weight:800;font-size:.9rem}
+  .tools{background:var(--tools-bg);border:1px solid var(--tools-border);border-radius:10px;padding:12px 16px;margin-top:12px}
+  .tools .t{display:block;margin-bottom:6px}
+  .tools .t:last-child{margin-bottom:0}
+  .tools .lab{display:inline-block;min-width:54px;font-weight:800;color:var(--accent);font-size:.8rem}
+  .tag{display:inline-block;background:var(--panel2);border:1px solid var(--border);border-radius:5px;padding:1px 7px;margin:2px 3px;font-size:.82rem;font-family:ui-monospace,Menlo,monospace}
+  .tag.html{color:var(--tag-text-html)}
+  .tag.css{color:var(--tag-text-css)}
+  .hint{background:var(--panel2);border:1px dashed var(--border);border-radius:8px;padding:8px 12px;margin-top:10px;font-size:.85rem;color:var(--hint-text)}
+  .hint b{color:var(--gold)}
+  .check{display:flex;align-items:center;gap:10px;margin-top:14px;cursor:pointer;user-select:none;font-weight:600;color:var(--green)}
+  .check input{width:20px;height:20px;cursor:pointer;accent-color:#22c55e}
+  .swatch{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:middle;border:1px solid #8888}
+  code{background:var(--panel2);border:1px solid var(--border);padding:1px 6px;border-radius:5px;color:var(--code);font-size:.88em}
+
+  .reglas{background:var(--panel2);border:1px dashed var(--border);border-radius:12px;padding:18px 22px;margin-bottom:24px}
+  .reglas h3{margin-top:0;color:var(--accent)}
+  .bonus{background:var(--panel);border:1px solid #7c3aed;border-radius:12px;padding:18px 22px;margin-bottom:24px}
+  .bonus h3{margin-top:0;color:#a855f7}
+  footer{text-align:center;color:var(--muted);font-size:.85rem;padding:20px}
+  .win{display:none;background:linear-gradient(135deg,#22c55e,#16a34a);border-radius:14px;padding:20px;text-align:center;font-weight:800;font-size:1.2rem;margin-bottom:24px;color:#fff}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>🍕 RETO: La Caja Feliz</h1>
+    <p>Maqueta la landing de tu food-truck aplicando TODO lo de la lección</p>
+    <span class="pill">🎯 8 misiones + bonus</span>
+  </header>
+
+  <div class="hud">
+    <span class="score">⭐ <span id="score">0</span> / 110 pts</span>
+    <div class="bar"><i id="fill"></i></div>
+    <span class="rank" id="rank">🥄 Pinche de cocina</span>
+    <button class="btn" id="theme" onclick="toggleTheme()">🌙 Oscuro</button>
+    <button class="btn" onclick="reset()">Reiniciar</button>
+  </div>
+
+  <div id="win" class="win">🏆 ¡FELICIDADES, CHEF! Completaste todas las misiones. Eres maestro del modelo de cajas. 🎉</div>
+
+  <div class="historia">
+    <strong>📖 La historia:</strong> Acabas de abrir <em>"La Caja Feliz"</em>, el food-truck de pizzas más
+    famoso del barrio. Cada misión te dice <strong>qué construir, cómo debe verse, y QUÉ etiquetas HTML y
+    propiedades CSS usar</strong>. Lo único que NO te damos es el código ya escrito: tú decides los valores,
+    el orden y cómo combinarlas. 🚚👨‍🍳
+  </div>
+
+  <div class="reglas">
+    <h3>📜 Antes de empezar — prepara tu cocina</h3>
+    <ol>
+      <li>Crea una carpeta nueva con un archivo <code>index.html</code>.</li>
+      <li>Escribe la estructura básica: <code>&lt;!DOCTYPE html&gt;</code>, <code>&lt;html&gt;</code>, <code>&lt;head&gt;</code> (con <code>&lt;meta charset&gt;</code> y <code>&lt;title&gt;</code>) y <code>&lt;body&gt;</code>.</li>
+      <li>El CSS va dentro de una etiqueta <code>&lt;style&gt;</code> en el <code>&lt;head&gt;</code> (o en un <code>styles.css</code> enlazado con <code>&lt;link&gt;</code>).</li>
+      <li>Prohibido Bootstrap, Tailwind o plantillas. <strong>Solo CSS escrito por ti.</strong></li>
+      <li>Ten las <strong>DevTools (F12)</strong> abiertas para inspeccionar tus cajas.</li>
+      <li>En cada misión tienes una <strong>🧰 Caja de herramientas</strong>: úsala como lista de ingredientes. Marca ✔ cuando cumplas todos los criterios.</li>
+    </ol>
+  </div>
+
+  <!-- ===================== MISIÓN 1 ===================== -->
+  <div class="mision" data-pts="10">
+    <span class="pts">+10 pts</span>
+    <h2><span class="lvl easy">FÁCIL</span> Misión 1 · El cartel del local</h2>
+    <p class="practica">Practicas: modelo de cajas (content · padding · border · margin)</p>
+    <h4>Qué construir</h4>
+    <ol>
+      <li>Dentro del <code>&lt;body&gt;</code> crea un <code>&lt;header&gt;</code>.</li>
+      <li>Dentro, un <code>&lt;h1&gt;</code> con el nombre del local (ej: "🍕 La Caja Feliz") y un <code>&lt;p&gt;</code> con un eslogan.</li>
+    </ol>
+    <h4>Especificaciones</h4>
+    <ul>
+      <li>Fondo a tu gusto (sugerido rojo tomate <span class="swatch" style="background:#e63946"></span> <code>#e63946</code>).</li>
+      <li>Relleno interno de <strong>30px</strong> por los 4 lados.</li>
+      <li>Borde <strong>inferior</strong> de 6px en otro color (sugerido <span class="swatch" style="background:#f4a261"></span> <code>#f4a261</code>).</li>
+      <li>Separación de <strong>20px por debajo</strong> respecto al resto.</li>
+      <li>Texto centrado.</li>
+    </ul>
+    <div class="tools">
+      <span class="t"><span class="lab">HTML:</span> <span class="tag html">&lt;header&gt;</span> <span class="tag html">&lt;h1&gt;</span> <span class="tag html">&lt;p&gt;</span></span>
+      <span class="t"><span class="lab">CSS:</span> <span class="tag css">background-color</span> <span class="tag css">padding</span> <span class="tag css">border-bottom</span> <span class="tag css">margin-bottom</span> <span class="tag css">text-align</span> <span class="tag css">color</span></span>
+    </div>
+    <h4>Criterios de aceptación</h4>
+    <ul class="ok">
+      <li>En DevTools se distinguen las 4 áreas: contenido, padding, borde y margin.</li>
+      <li>El texto está separado de los bordes y centrado.</li>
+    </ul>
+    <label class="check"><input type="checkbox"> ✅ Misión cumplida</label>
+  </div>
+
+  <!-- ===================== MISIÓN 2 ===================== -->
+  <div class="mision" data-pts="10">
+    <span class="pts">+10 pts</span>
+    <h2><span class="lvl easy">FÁCIL</span> Misión 2 · Medidas que no engañan</h2>
+    <p class="practica">Practicas: box-sizing</p>
+    <h4>Qué construir</h4>
+    <ol>
+      <li>Al inicio de tu CSS escribe UNA regla que afecte a todos los elementos y sus pseudoelementos.</li>
+      <li>Esa regla debe hacer que el <code>width</code> incluya padding y borde.</li>
+      <li>Comprueba con una caja de prueba de <strong>200px</strong> + <strong>20px</strong> de padding + <strong>5px</strong> de borde: debe seguir midiendo 200px en total.</li>
+    </ol>
+    <div class="tools">
+      <span class="t"><span class="lab">HTML:</span> <span class="tag html">&lt;div&gt;</span> (caja de prueba, opcional)</span>
+      <span class="t"><span class="lab">CSS:</span> <span class="tag css">* (selector universal)</span> <span class="tag css">*::before</span> <span class="tag css">*::after</span> <span class="tag css">box-sizing</span> <span class="tag css">width</span> <span class="tag css">padding</span> <span class="tag css">border</span></span>
+    </div>
+    <h4>Criterios de aceptación</h4>
+    <ul class="ok">
+      <li>Tu CSS empieza con la regla global de tamaño de caja.</li>
+      <li>La caja de prueba mide 200px de ancho total en DevTools.</li>
+    </ul>
+    <div class="hint">💡 <b>Recuerda:</b> <code>box-sizing</code> tiene dos valores — uno por defecto (<code>content-box</code>) y otro que "mete todo dentro". Tú eliges cuál usar.</div>
+    <label class="check"><input type="checkbox"> ✅ Misión cumplida</label>
+  </div>
+
+  <!-- ===================== MISIÓN 3 ===================== -->
+  <div class="mision" data-pts="10">
+    <span class="pts">+10 pts</span>
+    <h2><span class="lvl easy">FÁCIL</span> Misión 3 · El menú de arriba</h2>
+    <p class="practica">Practicas: bloque vs línea (inline-block)</p>
+    <h4>Qué construir</h4>
+    <ol><li>Dentro del header crea un <code>&lt;nav&gt;</code> con 3 enlaces <code>&lt;a&gt;</code>: "Inicio", "Pizzas", "Contacto".</li></ol>
+    <h4>Especificaciones</h4>
+    <ul>
+      <li>Los 3 enlaces en la misma fila, con aspecto de botón: padding ~10px arriba/abajo y 18px a los lados, fondo, esquinas redondeadas, sin subrayado.</li>
+      <li>Separación de ~8px entre ellos.</li>
+      <li>Reto: un <code>&lt;a&gt;</code> es inline y no acepta padding vertical… haz que sí lo acepte sin perder la fila.</li>
+    </ul>
+    <div class="tools">
+      <span class="t"><span class="lab">HTML:</span> <span class="tag html">&lt;nav&gt;</span> <span class="tag html">&lt;a&gt;</span></span>
+      <span class="t"><span class="lab">CSS:</span> <span class="tag css">display: inline-block</span> <span class="tag css">padding</span> <span class="tag css">margin</span> <span class="tag css">background-color</span> <span class="tag css">border-radius</span> <span class="tag css">text-decoration</span> <span class="tag css">color</span></span>
+    </div>
+    <h4>Criterios de aceptación</h4>
+    <ul class="ok">
+      <li>Los 3 se ven como botones alineados en una fila.</li>
+      <li>El padding vertical SÍ se aplica (no quedan aplastados).</li>
+      <li>Sin subrayado.</li>
+    </ul>
+    <label class="check"><input type="checkbox"> ✅ Misión cumplida</label>
+  </div>
+
+  <!-- ===================== MISIÓN 4 ===================== -->
+  <div class="mision" data-pts="15">
+    <span class="pts">+15 pts</span>
+    <h2><span class="lvl mid">MEDIO</span> Misión 4 · La vitrina de pizzas</h2>
+    <p class="practica">Practicas: display interno (grid)</p>
+    <h4>Qué construir</h4>
+    <ol>
+      <li>Una <code>&lt;section&gt;</code> contenedora.</li>
+      <li>Dentro, 6 tarjetas (<code>&lt;div&gt;</code>). Cada una con <code>&lt;h3&gt;</code> (nombre), <code>&lt;p&gt;</code> (descripción) y el precio.</li>
+    </ol>
+    <h4>Especificaciones</h4>
+    <ul>
+      <li>3 columnas iguales → 2 filas de 3.</li>
+      <li>Espacio uniforme de 16px entre tarjetas.</li>
+      <li>Tarjetas con fondo claro, padding ~16px, esquinas redondeadas y borde sutil.</li>
+    </ul>
+    <div class="tools">
+      <span class="t"><span class="lab">HTML:</span> <span class="tag html">&lt;section&gt;</span> <span class="tag html">&lt;div&gt;</span> <span class="tag html">&lt;h3&gt;</span> <span class="tag html">&lt;p&gt;</span></span>
+      <span class="t"><span class="lab">CSS:</span> <span class="tag css">display: grid</span> <span class="tag css">grid-template-columns</span> <span class="tag css">repeat()</span> <span class="tag css">fr</span> <span class="tag css">gap</span> <span class="tag css">padding</span> <span class="tag css">border-radius</span> <span class="tag css">border</span></span>
+    </div>
+    <h4>Criterios de aceptación</h4>
+    <ul class="ok">
+      <li>3 columnas alineadas aunque los textos tengan distinta longitud.</li>
+      <li>Misma separación en toda la cuadrícula.</li>
+    </ul>
+    <label class="check"><input type="checkbox"> ✅ Misión cumplida</label>
+  </div>
+
+  <!-- ===================== MISIÓN 5 ===================== -->
+  <div class="mision" data-pts="15">
+    <span class="pts">+15 pts</span>
+    <h2><span class="lvl mid">MEDIO</span> Misión 5 · La barra superior</h2>
+    <p class="practica">Practicas: flexbox</p>
+    <h4>Qué construir</h4>
+    <ol><li>Reorganiza el header para que el logo/nombre quede a la izquierda y el <code>&lt;nav&gt;</code> a la derecha, en la misma franja.</li></ol>
+    <h4>Especificaciones</h4>
+    <ul>
+      <li>Logo pegado a la izquierda, menú pegado a la derecha, espacio libre repartido entre ambos.</li>
+      <li>Ambos alineados verticalmente al centro.</li>
+      <li>Padding lateral cómodo (~20px).</li>
+    </ul>
+    <div class="tools">
+      <span class="t"><span class="lab">HTML:</span> <span class="tag html">&lt;header&gt;</span> <span class="tag html">&lt;nav&gt;</span> (envuelve el logo en un <span class="tag html">&lt;span&gt;</span> o <span class="tag html">&lt;div&gt;</span>)</span>
+      <span class="t"><span class="lab">CSS:</span> <span class="tag css">display: flex</span> <span class="tag css">justify-content: space-between</span> <span class="tag css">align-items: center</span> <span class="tag css">padding</span></span>
+    </div>
+    <h4>Criterios de aceptación</h4>
+    <ul class="ok">
+      <li>Logo a la izquierda y menú a la derecha en la misma línea.</li>
+      <li>Centrados verticalmente entre sí.</li>
+      <li>Al agrandar la ventana se mantienen en sus extremos.</li>
+    </ul>
+    <label class="check"><input type="checkbox"> ✅ Misión cumplida</label>
+  </div>
+
+  <!-- ===================== MISIÓN 6 ===================== -->
+  <div class="mision" data-pts="15">
+    <span class="pts">+15 pts</span>
+    <h2><span class="lvl mid">MEDIO</span> Misión 6 · La etiqueta "¡NUEVA!"</h2>
+    <p class="practica">Practicas: posicionamiento (relative + absolute)</p>
+    <h4>Qué construir</h4>
+    <ol><li>En UNA de las tarjetas, agrega un <code>&lt;span&gt;</code> con el texto "¡NUEVA!".</li></ol>
+    <h4>Especificaciones</h4>
+    <ul>
+      <li>Insignia en la esquina superior derecha de ESA tarjeta (puede sobresalir un poco).</li>
+      <li>Fondo rojo, texto blanco, padding pequeño, esquinas redondeadas.</li>
+      <li>Debe posicionarse respecto a la tarjeta, NO a la página: la tarjeta es el "ancla".</li>
+    </ul>
+    <div class="tools">
+      <span class="t"><span class="lab">HTML:</span> <span class="tag html">&lt;span&gt;</span> (dentro de la tarjeta)</span>
+      <span class="t"><span class="lab">CSS padre (tarjeta):</span> <span class="tag css">position: relative</span></span>
+      <span class="t"><span class="lab">CSS hijo (badge):</span> <span class="tag css">position: absolute</span> <span class="tag css">top</span> <span class="tag css">right</span> <span class="tag css">background-color</span> <span class="tag css">color</span> <span class="tag css">padding</span> <span class="tag css">border-radius</span></span>
+    </div>
+    <h4>Criterios de aceptación</h4>
+    <ul class="ok">
+      <li>La insignia flota sobre la esquina de la tarjeta correcta.</li>
+      <li>Al hacer scroll viaja con la tarjeta.</li>
+    </ul>
+    <div class="hint">💡 <b>Comprueba:</b> si quitas el <code>position: relative</code> del padre, el badge se irá a la esquina de la página. Eso prueba para qué sirve el ancla.</div>
+    <label class="check"><input type="checkbox"> ✅ Misión cumplida</label>
+  </div>
+
+  <!-- ===================== MISIÓN 7 ===================== -->
+  <div class="mision" data-pts="10">
+    <span class="pts">+10 pts</span>
+    <h2><span class="lvl mid">MEDIO</span> Misión 7 · El menú que te persigue</h2>
+    <p class="practica">Practicas: posicionamiento (sticky)</p>
+    <h4>Qué construir</h4>
+    <ol>
+      <li>Asegura que la página tenga scroll (las 6 pizzas suelen bastar).</li>
+      <li>Haz que la barra superior (header) se quede fija arriba al bajar.</li>
+    </ol>
+    <h4>Especificaciones</h4>
+    <ul>
+      <li>Al cargar está en su lugar; al hacer scroll se pega al borde superior de la ventana y se mantiene visible.</li>
+      <li>Debe quedar por encima del contenido (no ser tapada).</li>
+    </ul>
+    <div class="tools">
+      <span class="t"><span class="lab">HTML:</span> <span class="tag html">&lt;header&gt;</span> (el que ya tienes)</span>
+      <span class="t"><span class="lab">CSS:</span> <span class="tag css">position: sticky</span> <span class="tag css">top: 0</span> <span class="tag css">z-index</span></span>
+    </div>
+    <h4>Criterios de aceptación</h4>
+    <ul class="ok">
+      <li>Bajas a ver las pizzas y el menú sigue pegado arriba.</li>
+      <li>La barra no queda tapada por el contenido.</li>
+    </ul>
+    <label class="check"><input type="checkbox"> ✅ Misión cumplida</label>
+  </div>
+
+  <!-- ===================== MISIÓN 8 ===================== -->
+  <div class="mision" data-pts="15">
+    <span class="pts">+15 pts</span>
+    <h2><span class="lvl hard">DIFÍCIL</span> Misión 8 · La historia que se adapta</h2>
+    <p class="practica">Practicas: float + layout fluido + clear</p>
+    <h4>Qué construir</h4>
+    <ol>
+      <li>Una <code>&lt;section&gt;</code> con título "Nuestra historia".</li>
+      <li>Un cuadro-imagen: <code>&lt;div&gt;</code> de 150x150px con color de fondo (o <code>&lt;img&gt;</code> real).</li>
+      <li>Un <code>&lt;p&gt;</code> largo (4–5 líneas) con la historia.</li>
+      <li>Al final, un <code>&lt;footer&gt;</code> con "© 2026 La Caja Feliz".</li>
+    </ol>
+    <h4>Especificaciones</h4>
+    <ul>
+      <li>El párrafo envuelve la imagen (imagen a la izquierda, texto a su derecha y por debajo).</li>
+      <li>El contenido principal con ancho fluido (ej. 90% del ancho, centrado): se adapta al redimensionar.</li>
+      <li>El footer siempre debajo de todo, sin meterse al lado de la imagen.</li>
+    </ul>
+    <div class="tools">
+      <span class="t"><span class="lab">HTML:</span> <span class="tag html">&lt;section&gt;</span> <span class="tag html">&lt;h2&gt;</span> <span class="tag html">&lt;div&gt;</span> / <span class="tag html">&lt;img&gt;</span> <span class="tag html">&lt;p&gt;</span> <span class="tag html">&lt;footer&gt;</span></span>
+      <span class="t"><span class="lab">CSS:</span> <span class="tag css">float: left</span> <span class="tag css">width: 90%</span> <span class="tag css">margin: 0 auto</span> <span class="tag css">clear: both</span> <span class="tag css">overflow: hidden</span> <span class="tag css">max-width</span></span>
+    </div>
+    <h4>Criterios de aceptación</h4>
+    <ul class="ok">
+      <li>El texto rodea la imagen por el costado.</li>
+      <li>Al redimensionar, el contenido se adapta sin scroll horizontal.</li>
+      <li>El footer queda limpio, debajo, ocupando todo el ancho.</li>
+    </ul>
+    <label class="check"><input type="checkbox"> ✅ Misión cumplida</label>
+  </div>
+
+  <!-- ===================== BONUS ===================== -->
+  <div class="bonus">
+    <h3>⭐ Misiones BONUS (opcionales, para los cracks)</h3>
+    <div class="mision" data-pts="10" style="margin-top:10px">
+      <span class="pts">+10 pts</span>
+      <h2><span class="lvl hard">BONUS</span> Efecto al pasar el mouse</h2>
+      <p>Cada tarjeta de pizza debe reaccionar al pasar el cursor: elevarse, cambiar sombra o borde, de forma suave.</p>
+      <div class="tools">
+        <span class="t"><span class="lab">CSS:</span> <span class="tag css">:hover</span> <span class="tag css">box-shadow</span> <span class="tag css">transform: translateY()</span> <span class="tag css">transition</span></span>
+      </div>
+      <ul class="ok"><li>Al pasar el mouse la tarjeta cambia; al salir vuelve a la normalidad, con transición suave.</li></ul>
+      <label class="check"><input type="checkbox"> ✅ Logrado</label>
+    </div>
+    <div class="mision" data-pts="10" style="margin-bottom:0">
+      <span class="pts">+10 pts</span>
+      <h2><span class="lvl hard">BONUS</span> Modo móvil</h2>
+      <p>Cuando la ventana sea más angosta que 600px, la vitrina debe pasar de 3 columnas a 1 sola columna.</p>
+      <div class="tools">
+        <span class="t"><span class="lab">CSS:</span> <span class="tag css">@media (max-width: 600px)</span> <span class="tag css">grid-template-columns</span></span>
+      </div>
+      <ul class="ok"><li>Pantalla ancha: 3 columnas. Pantalla angosta (&lt;600px): 1 columna.</li></ul>
+      <label class="check"><input type="checkbox"> ✅ Logrado</label>
+    </div>
+  </div>
+
+  <div class="reglas">
+    <h3>📤 Entrega (por GitHub Pages)</h3>
+    <ol>
+      <li>Crea un repositorio público en GitHub (ej. <code>la-caja-feliz</code>) y sube tu <code>index.html</code> (y <code>styles.css</code> si lo separaste).</li>
+      <li>Activa GitHub Pages: en el repo ve a <strong>Settings → Pages</strong>, en "Branch" elige <code>main</code> y carpeta <code>/ (root)</code>, y guarda.</li>
+      <li>Espera 1–2 min y copia la URL que te da GitHub (algo como <code>https://tu-usuario.github.io/la-caja-feliz/</code>).</li>
+      <li>Entrega <strong>esa URL</strong> + una captura de pantalla del food-truck terminado.</li>
+      <li>Comenta: ¿qué misión te costó más y por qué?</li>
+    </ol>
+  </div>
+
+  <footer>
+    🍕 La Caja Feliz · Reto de práctica — Lección 04 · Modelo de cajas y Layout<br>
+    Tu progreso y tu tema se guardan automáticamente en este navegador.
+  </footer>
+</div>
+
+<script>
+  const KEY='reto-caja-feliz-v3', TKEY='reto-caja-feliz-theme';
+  const checks=[...document.querySelectorAll('.mision input[type=checkbox]')];
+  const ranks=[[0,'🥄 Pinche de cocina'],[30,'🍳 Ayudante de chef'],[60,'👨‍🍳 Chef pizzero'],[90,'🔥 Maestro de la masa'],[110,'🏆 Leyenda de La Caja Feliz']];
+  function save(){ localStorage.setItem(KEY,JSON.stringify(checks.map(c=>c.checked))); }
+  function load(){ try{ const s=JSON.parse(localStorage.getItem(KEY)||'[]'); checks.forEach((c,i)=>c.checked=!!s[i]); }catch(e){} }
+  function update(){
+    let score=0;
+    checks.forEach(c=>{ const card=c.closest('.mision'); const pts=+card.dataset.pts;
+      if(c.checked){ score+=pts; card.classList.add('done'); } else card.classList.remove('done'); });
+    document.getElementById('score').textContent=score;
+    document.getElementById('fill').style.width=Math.min(100,score/110*100)+'%';
+    let r=ranks[0][1]; ranks.forEach(([m,n])=>{ if(score>=m) r=n; });
+    document.getElementById('rank').textContent=r;
+    document.getElementById('win').style.display=score>=110?'block':'none';
+  }
+  function applyTheme(t){
+    document.documentElement.setAttribute('data-theme',t);
+    document.getElementById('theme').textContent = t==='dark' ? '☀️ Claro' : '🌙 Oscuro';
+  }
+  function toggleTheme(){
+    const cur=document.documentElement.getAttribute('data-theme');
+    const next=cur==='dark'?'light':'dark';
+    localStorage.setItem(TKEY,next); applyTheme(next);
+  }
+  checks.forEach(c=>c.addEventListener('change',()=>{ save(); update(); }));
+  function reset(){ if(confirm('¿Reiniciar todo tu progreso?')){ checks.forEach(c=>c.checked=false); save(); update(); } }
+  window.reset=reset; window.toggleTheme=toggleTheme;
+  applyTheme(localStorage.getItem(TKEY)||'dark');
+  load(); update();
+</script>
+</body>
+</html>
