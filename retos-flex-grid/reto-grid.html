@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🟩 Reto Grid · Bento Portafolio</title>
+<style>
+  :root{ --bg:#0f172a;--text:#e2e8f0;--muted:#94a3b8;--panel:#1e293b;--panel2:#0f172a;--border:#334155;--accent:#38bdf8;--pink:#f472b6;--gold:#fbbf24;--green:#86efac;--tools-bg:#052e1a;--tools-border:#16a34a;--code:#fbbf24;--hint:#cbd5e1; }
+  html[data-theme="light"]{ --bg:#f1f5f9;--text:#1e293b;--muted:#64748b;--panel:#fff;--panel2:#f8fafc;--border:#e2e8f0;--accent:#0284c7;--pink:#db2777;--gold:#b45309;--green:#15803d;--tools-bg:#dcfce7;--tools-border:#16a34a;--code:#b45309;--hint:#475569; }
+  *,*::before,*::after{box-sizing:border-box}
+  body{font-family:system-ui,Segoe UI,Roboto,sans-serif;margin:0;background:var(--bg);color:var(--text);line-height:1.65;transition:.25s}
+  .wrap{max-width:940px;margin:0 auto;padding:24px}
+  header{background:linear-gradient(135deg,#16a34a,#0ea5e9);border-radius:16px;padding:30px;text-align:center;margin-bottom:24px;color:#fff;box-shadow:0 12px 40px rgba(22,163,74,.3)}
+  header h1{margin:0 0 6px;font-size:1.9rem}
+  header p{margin:0;color:#d1fae5}
+  .pill{display:inline-block;background:rgba(255,255,255,.18);padding:4px 14px;border-radius:999px;font-size:.8rem;font-weight:700;margin-top:12px}
+  .hud{position:sticky;top:0;z-index:10;background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:14px 20px;margin-bottom:24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+  .hud .score{font-size:1.35rem;font-weight:800;color:var(--gold)}
+  .bar{flex:1;min-width:130px;height:14px;background:var(--panel2);border-radius:999px;overflow:hidden;border:1px solid var(--border)}
+  .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#22c55e,#84cc16);transition:width .4s}
+  .rank{font-weight:700;color:var(--accent)}
+  .btn{background:var(--border);color:var(--text);border:none;padding:8px 14px;border-radius:8px;cursor:pointer;font-weight:600}
+  .btn:hover{filter:brightness(1.15)}
+  .historia{background:var(--panel);border-left:4px solid var(--gold);border-radius:10px;padding:18px 22px;margin-bottom:24px;color:var(--text)}
+  .reglas{background:var(--panel2);border:1px dashed var(--border);border-radius:12px;padding:18px 22px;margin-bottom:24px}
+  .reglas h3{margin-top:0;color:var(--accent)}
+  .mision{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:18px;transition:.2s}
+  .mision.done{border-color:#22c55e}
+  .mision h2{margin:0 0 4px;font-size:1.12rem;color:var(--pink);display:flex;align-items:center;gap:10px}
+  .lvl{font-size:.68rem;font-weight:800;padding:2px 9px;border-radius:999px}
+  .lvl.easy{background:#22c55e;color:#052e16}.lvl.mid{background:#f59e0b;color:#451a03}.lvl.hard{background:#ef4444;color:#450a0a}.lvl.pers{background:#a855f7;color:#fff}
+  .practica{font-size:.8rem;color:var(--muted);margin:0 0 12px}
+  .mision h4{margin:14px 0 4px;font-size:.8rem;letter-spacing:.04em;text-transform:uppercase;color:var(--accent)}
+  .mision ol,.mision ul{margin:6px 0 0;padding-left:22px}.mision li{margin-bottom:5px}
+  .ok{list-style:none;margin-left:-6px}.ok li::before{content:"✔ ";color:#22c55e;font-weight:800}
+  .pts{float:right;color:var(--gold);font-weight:800;font-size:.9rem}
+  .tools{background:var(--tools-bg);border:1px solid var(--tools-border);border-radius:10px;padding:12px 16px;margin-top:12px}
+  .tools .t{display:block;margin-bottom:6px}.tools .t:last-child{margin-bottom:0}
+  .tools .lab{display:inline-block;min-width:54px;font-weight:800;color:var(--accent);font-size:.8rem}
+  .tag{display:inline-block;background:var(--panel2);border:1px solid var(--border);border-radius:5px;padding:1px 7px;margin:2px 3px;font-size:.82rem;font-family:ui-monospace,Menlo,monospace}
+  .tag.html{color:var(--pink)}.tag.css{color:var(--code)}
+  .hint{background:var(--panel2);border:1px dashed var(--border);border-radius:8px;padding:8px 12px;margin-top:10px;font-size:.85rem;color:var(--hint)}
+  .hint b{color:var(--gold)}
+  .check{display:flex;align-items:center;gap:10px;margin-top:14px;cursor:pointer;user-select:none;font-weight:600;color:var(--green)}
+  .check input{width:20px;height:20px;cursor:pointer;accent-color:#22c55e}
+  code{background:var(--panel2);border:1px solid var(--border);padding:1px 6px;border-radius:5px;color:var(--code);font-size:.88em}
+  pre{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:14px;overflow:auto;font-size:.82rem}
+  .bonus{background:var(--panel);border:1px solid #7c3aed;border-radius:12px;padding:18px 22px;margin-bottom:24px}
+  .bonus h3{margin-top:0;color:#a855f7}
+  .copybtn{background:#22c55e;color:#052e16;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:700;margin-bottom:10px}
+  footer{text-align:center;color:var(--muted);font-size:.85rem;padding:20px}
+  .win{display:none;background:linear-gradient(135deg,#22c55e,#16a34a);border-radius:14px;padding:20px;text-align:center;font-weight:800;font-size:1.15rem;margin-bottom:24px;color:#fff}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>🟩 RETO GRID</h1>
+    <p>Arma tu <strong>Bento Portafolio</strong> — el layout modular de moda (estilo Apple 2025)</p>
+    <span class="pill">🎯 Misiones + personalización + publicación</span>
+  </header>
+
+  <div class="hud">
+    <span class="score">⭐ <span id="score">0</span> / <span id="max">0</span> pts</span>
+    <div class="bar"><i id="fill"></i></div>
+    <span class="rank" id="rank">—</span>
+    <button class="btn" id="theme" onclick="toggleTheme()">🌙 Oscuro</button>
+    <button class="btn" onclick="reset()">Reiniciar</button>
+  </div>
+
+  <div id="win" class="win">🏆 ¡BENTO COMPLETO! Dominaste CSS Grid. Publícalo y enséñalo con orgullo. 🎉</div>
+
+  <div class="historia">
+    <strong>📖 La misión:</strong> Un <em>Bento Grid</em> es ese diseño de cajas de distintos tamaños encajadas como una caja bento japonesa — lo verás en las webs más modernas. Vas a construir tu <strong>portafolio</strong> con ese estilo. Te damos las tarjetas en HTML; tú las acomodas en una cuadrícula <strong>solo con CSS Grid</strong>. Cada misión dice QUÉ lograr y QUÉ propiedades usar; el cómo lo resuelves tú. 🧩
+  </div>
+
+  <div class="reglas">
+    <h3>📦 Tu punto de partida</h3>
+    <p>Copia este HTML base (o abre <code>base-grid.html</code>) y trabaja dentro de <code>&lt;style&gt;</code>. Las tarjetas ya existen; tú las organizas con Grid.</p>
+    <button class="copybtn" onclick="copyBase()">📋 Copiar HTML base</button>
+    <pre><code id="baseCode">&lt;!DOCTYPE html&gt;
+&lt;html lang="es"&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+&lt;title&gt;Mi Bento Portafolio&lt;/title&gt;
+&lt;style&gt;
+  *,*::before,*::after{ box-sizing:border-box; }
+  body{ margin:0; font-family:system-ui,sans-serif; background:#0f172a; color:#e2e8f0; padding:20px; }
+
+  /* 🎨 ESCRIBE AQUÍ TU CSS CON GRID */
+
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;main class="bento"&gt;
+    &lt;section class="box intro"&gt;
+      &lt;h1&gt;Hola, soy Tu Nombre 👋&lt;/h1&gt;
+      &lt;p&gt;Desarrollador/a web&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;section class="box foto"&gt;🖼️&lt;/section&gt;
+    &lt;section class="box skills"&gt;
+      &lt;h2&gt;Skills&lt;/h2&gt;
+      &lt;p&gt;HTML · CSS · JavaScript&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;section class="box proyecto"&gt;
+      &lt;h2&gt;Proyecto destacado&lt;/h2&gt;
+      &lt;p&gt;Describe tu mejor proyecto en una frase.&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;section class="box frase"&gt;"Una cita que te inspire"&lt;/section&gt;
+    &lt;section class="box contacto"&gt;
+      &lt;h2&gt;Contacto&lt;/h2&gt;
+      &lt;p&gt;tu@email.com&lt;/p&gt;
+    &lt;/section&gt;
+  &lt;/main&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+
+  <!-- MISIONES -->
+  <div class="mision" data-pts="10">
+    <span class="pts">+10 pts</span>
+    <h2><span class="lvl easy">FÁCIL</span> Misión 1 · Levanta la cuadrícula</h2>
+    <p class="practica">Concepto: display:grid + columnas + gap</p>
+    <h4>Qué lograr</h4>
+    <ul><li>Convierte <code>.bento</code> en una cuadrícula de <strong>varias columnas iguales</strong> (empieza con 3 o 4).</li>
+    <li>Deja una <strong>separación uniforme</strong> entre todas las tarjetas.</li>
+    <li>Dale a cada <code>.box</code> fondo, padding y esquinas redondeadas para que se vean como tarjetas.</li></ul>
+    <div class="tools">
+      <span class="t"><span class="lab">CSS .bento:</span> <span class="tag css">display: grid</span> <span class="tag css">grid-template-columns</span> <span class="tag css">repeat()</span> <span class="tag css">1fr</span> <span class="tag css">gap</span></span>
+      <span class="t"><span class="lab">CSS .box:</span> <span class="tag css">background</span> <span class="tag css">padding</span> <span class="tag css">border-radius</span></span>
+    </div>
+    <ul class="ok"><li>Las 6 tarjetas se acomodan en una rejilla con separación pareja.</li></ul>
+    <label class="check"><input type="checkbox"> ✅ Misión cumplida</label>
+  </div>
+
+  <div class="mision" data-pts="10">
+    <span class="pts">+10 pts</span>
+    <h2><span class="lvl easy">FÁCIL</span> Misión 2 · Dale altura a las celdas</h2>
+    <p class="practica">Concepto: grid-auto-rows / grid-template-rows</p>
+    <h4>Qué lograr</h4>
+    <ul><li>Haz que todas las filas tengan una <strong>altura mínima</strong> pareja, para que las tarjetas no queden aplastadas y el bento se vea equilibrado.</li></ul>
+    <div class="tools">
+      <span class="t"><span class="lab">CSS .bento:</span> <span class="tag css">grid-auto-rows</span> (ej. un valor en px o minmax)</span>
+    </div>
+    <ul class="ok"><li>Todas las tarjetas tienen una altura base similar y consistente.</li></ul>
+    <label class="check"><input type="checkbox"> ✅ Misión cumplida</label>
+  </div>
+
+  <div class="mision" data-pts="15">
+    <span class="pts">+15 pts</span>
+    <h2><span class="lvl mid">MEDIO</span> Misión 3 · Una celda protagonista (2×2)</h2>
+    <p class="practica">Concepto: grid-column span + grid-row span</p>
+    <h4>Qué lograr</h4>
+    <ul><li>Haz que UNA tarjeta (ej. <code>.intro</code> o <code>.foto</code>) ocupe <strong>2 columnas Y 2 filas</strong>, destacando como pieza central del bento.</li></ul>
+    <div class="tools">
+      <span class="t"><span class="lab">CSS:</span> <span class="tag css">grid-column: span 2</span> <span class="tag css">grid-row: span 2</span></span>
+    </div>
+    <ul class="ok"><li>Una tarjeta grande domina la composición; las demás se acomodan alrededor.</li></ul>
+    <label class="check"><input type="checkbox"> ✅ Misión cumplida</label>
+  </div>
+
+  <div class="mision" data-pts="10">
+    <span class="pts">+10 pts</span>
+    <h2><span class="lvl mid">MEDIO</span> Misión 4 · Una tarjeta de lado a lado</h2>
+    <p class="practica">Concepto: grid-column con líneas (span / 1 / -1)</p>
+    <h4>Qué lograr</h4>
+    <ul><li>Haz que otra tarjeta (ej. <code>.frase</code>) sea <strong>ancha</strong>: que ocupe 2 columnas o incluso <strong>toda la fila</strong>.</li></ul>
+    <div class="tools">
+      <span class="t"><span class="lab">CSS:</span> <span class="tag css">grid-column: span 2</span> ó <span class="tag css">grid-column: 1 / -1</span></span>
+    </div>
+    <ul class="ok"><li>La tarjeta elegida se extiende a lo ancho rompiendo la rejilla con gracia.</li></ul>
+    <div class="hint">💡 <b>Dato:</b> la línea <code>-1</code> siempre es la última; por eso <code>1 / -1</code> significa "de borde a borde".</div>
+    <label class="check"><input type="checkbox"> ✅ Misión cumplida</label>
+  </div>
+
+  <div class="mision" data-pts="10">
+    <span class="pts">+10 pts</span>
+    <h2><span class="lvl mid">MEDIO</span> Misión 5 · Centra el contenido de cada caja</h2>
+    <p class="practica">Concepto: alinear contenido dentro de la celda</p>
+    <h4>Qué lograr</h4>
+    <ul><li>Que el texto de tarjetas como <code>.foto</code> y <code>.frase</code> quede <strong>centrado</strong> dentro de su caja (horizontal y vertical).</li></ul>
+    <div class="tools">
+      <span class="t"><span class="lab">CSS (en la caja):</span> <span class="tag css">display: grid</span> <span class="tag css">place-items: center</span></span>
+      <span class="t"><span class="lab">o bien:</span> <span class="tag css">align-items</span> <span class="tag css">justify-items</span> <span class="tag css">text-align</span></span>
+    </div>
+    <ul class="ok"><li>El emoji y la frase quedan perfectamente centrados en su tarjeta.</li></ul>
+    <label class="check"><input type="checkbox"> ✅ Misión cumplida</label>
+  </div>
+
+  <div class="mision" data-pts="15">
+    <span class="pts">+15 pts</span>
+    <h2><span class="lvl hard">DIFÍCIL</span> Misión 6 · Maqueta con nombres (modo pro)</h2>
+    <p class="practica">Concepto: grid-template-areas + grid-area</p>
+    <h4>Qué lograr</h4>
+    <ul><li>En lugar de span, define la posición de cada tarjeta con <strong>nombres de áreas</strong>. Dibuja el bento como un mapa y asígnale a cada caja su nombre.</li>
+    <li>(Si ya lograste el layout con span en las misiones 3 y 4, este es el camino alternativo "elegante" — inténtalo aunque sea en una copia.)</li></ul>
+    <div class="tools">
+      <span class="t"><span class="lab">CSS .bento:</span> <span class="tag css">grid-template-areas</span></span>
+      <span class="t"><span class="lab">CSS cada caja:</span> <span class="tag css">grid-area: intro</span> <span class="tag css">grid-area: foto</span> …</span>
+    </div>
+    <ul class="ok"><li>El layout queda definido por un "mapa" de nombres, fácil de reordenar.</li></ul>
+    <label class="check"><input type="checkbox"> ✅ Misión cumplida</label>
+  </div>
+
+  <div class="mision" data-pts="10">
+    <span class="pts">+10 pts</span>
+    <h2><span class="lvl mid">MEDIO</span> Misión 7 · Responsive sin media queries</h2>
+    <p class="practica">Concepto: repeat(auto-fit, minmax())</p>
+    <h4>Qué lograr</h4>
+    <ul><li>Haz que la cuadrícula <strong>calcule sola</strong> cuántas columnas caben según el ancho de la pantalla, reacomodando las tarjetas al redimensionar.</li></ul>
+    <div class="tools">
+      <span class="t"><span class="lab">CSS .bento:</span> <span class="tag css">grid-template-columns</span> <span class="tag css">repeat(auto-fit, minmax(…, 1fr))</span></span>
+    </div>
+    <ul class="ok"><li>Al achicar la ventana, las columnas se reducen solas sin escribir media queries.</li></ul>
+    <label class="check"><input type="checkbox"> ✅ Misión cumplida</label>
+  </div>
+
+  <div class="mision" data-pts="15">
+    <span class="pts">+15 pts</span>
+    <h2><span class="lvl pers">PERSONALIZA</span> Misión 8 · Hazlo TUYO</h2>
+    <p class="practica">Aquí editas el contenido y la identidad visual</p>
+    <h4>Qué lograr</h4>
+    <ul>
+      <li>Pon tu <strong>nombre y rol</strong> reales, tus <strong>skills</strong> verdaderas y <strong>un proyecto</strong> tuyo (con su enlace real con <code>&lt;a&gt;</code>).</li>
+      <li>Cambia la <strong>foto</strong> (emoji por una imagen real con <code>&lt;img&gt;</code>) y la <strong>frase</strong> por una que te represente.</li>
+      <li>Elige tu <strong>paleta de colores</strong> para las tarjetas (puedes dar colores distintos a la protagonista).</li>
+    </ul>
+    <div class="tools">
+      <span class="t"><span class="lab">HTML:</span> edita textos y agrega <span class="tag html">&lt;a&gt;</span> con tus enlaces</span>
+      <span class="t"><span class="lab">CSS:</span> <span class="tag css">background</span> <span class="tag css">color</span> <span class="tag css">linear-gradient()</span> <span class="tag css">box-shadow</span></span>
+    </div>
+    <ul class="ok"><li>El portafolio muestra info real tuya y al menos 1 enlace que funcione.</li></ul>
+    <label class="check"><input type="checkbox"> ✅ Misión cumplida</label>
+  </div>
+
+  <div class="bonus">
+    <h3>⭐ BONUS (para los cracks)</h3>
+    <div class="mision" data-pts="10" style="margin-top:10px">
+      <span class="pts">+10 pts</span>
+      <h2><span class="lvl hard">BONUS</span> Tarjetas con vida</h2>
+      <p>Haz que las tarjetas reaccionen al pasar el mouse (se eleven o cambien sombra), de forma suave.</p>
+      <div class="tools"><span class="t"><span class="lab">CSS:</span> <span class="tag css">:hover</span> <span class="tag css">transition</span> <span class="tag css">transform</span> <span class="tag css">box-shadow</span></span></div>
+      <label class="check"><input type="checkbox"> ✅ Logrado</label>
+    </div>
+    <div class="mision" data-pts="10" style="margin-bottom:0">
+      <span class="pts">+10 pts</span>
+      <h2><span class="lvl hard">BONUS</span> Bento móvil perfecto</h2>
+      <p>En pantallas angostas, que el bento pase a <strong>una sola columna</strong> apilada y se vea ordenado.</p>
+      <div class="tools"><span class="t"><span class="lab">CSS:</span> <span class="tag css">@media (max-width: ...)</span> <span class="tag css">grid-template-columns: 1fr</span></span></div>
+      <label class="check"><input type="checkbox"> ✅ Logrado</label>
+    </div>
+  </div>
+
+  <div class="reglas">
+    <h3>📤 Publica tu Bento Portafolio en GitHub Pages</h3>
+    <ol>
+      <li>Crea un repositorio público en GitHub (ej. <code>bento-portafolio</code>) y sube tu archivo como <code>index.html</code>.</li>
+      <li>Entra al repo → <strong>Settings → Pages</strong>. En "Branch" elige <code>main</code> y carpeta <code>/ (root)</code>. Guarda.</li>
+      <li>Espera 1–2 min y copia la URL (algo como <code>https://tu-usuario.github.io/bento-portafolio/</code>).</li>
+      <li>Comprueba que carga bien y se ve responsive.</li>
+      <li>Entrega <strong>esa URL</strong> + una captura de tu bento.</li>
+    </ol>
+    <div class="hint">💡 Puedes usar <strong>un solo repositorio</strong> con dos carpetas (<code>/bio-card</code> y <code>/bento</code>) para entregar las dos actividades juntas, o un repo para cada una. ¡Tú eliges!</div>
+  </div>
+
+  <footer>🟩 Reto Grid · Bento Portafolio · Tu progreso y tu tema se guardan en este navegador.</footer>
+</div>
+
+<script>
+  const KEY='reto-grid-bento', TKEY='reto-grid-theme';
+  const checks=[...document.querySelectorAll('.mision input[type=checkbox]')];
+  const MAX=[...document.querySelectorAll('.mision')].reduce((a,m)=>a+(+m.dataset.pts||0),0);
+  document.getElementById('max').textContent=MAX;
+  const ranks=[[0,'🧱 Albañil de celdas'],[.3,'📦 Aprendiz Bento'],[.6,'🧩 Encajador de cajas'],[.9,'🔥 Maestro Grid'],[1,'👑 Arquitecto del layout']];
+  function save(){ localStorage.setItem(KEY,JSON.stringify(checks.map(c=>c.checked))); }
+  function load(){ try{ const s=JSON.parse(localStorage.getItem(KEY)||'[]'); checks.forEach((c,i)=>c.checked=!!s[i]); }catch(e){} }
+  function update(){
+    let sc=0; checks.forEach(c=>{ const m=c.closest('.mision'); const p=+m.dataset.pts;
+      if(c.checked){ sc+=p; m.classList.add('done'); } else m.classList.remove('done'); });
+    document.getElementById('score').textContent=sc;
+    const pct=MAX?sc/MAX:0;
+    document.getElementById('fill').style.width=(pct*100)+'%';
+    let r=ranks[0][1]; ranks.forEach(([t,n])=>{ if(pct>=t) r=n; });
+    document.getElementById('rank').textContent=r;
+    document.getElementById('win').style.display=pct>=1?'block':'none';
+  }
+  function applyTheme(t){ document.documentElement.setAttribute('data-theme',t); document.getElementById('theme').textContent=t==='dark'?'☀️ Claro':'🌙 Oscuro'; }
+  function toggleTheme(){ const n=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark'; localStorage.setItem(TKEY,n); applyTheme(n); }
+  function copyBase(){ const txt=document.getElementById('baseCode').innerText; navigator.clipboard.writeText(txt).then(()=>{ const b=event.target; b.textContent='✅ ¡Copiado!'; setTimeout(()=>b.textContent='📋 Copiar HTML base',1500); }); }
+  function reset(){ if(confirm('¿Reiniciar tu progreso?')){ checks.forEach(c=>c.checked=false); save(); update(); } }
+  window.toggleTheme=toggleTheme; window.copyBase=copyBase; window.reset=reset;
+  checks.forEach(c=>c.addEventListener('change',()=>{ save(); update(); }));
+  applyTheme(localStorage.getItem(TKEY)||'dark'); load(); update();
+</script>
+</body>
+</html>

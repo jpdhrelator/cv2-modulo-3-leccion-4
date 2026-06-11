@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Retos · Flexbox & Grid</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  body{font-family:system-ui,Segoe UI,Roboto,sans-serif;margin:0;background:#0f172a;color:#e2e8f0;line-height:1.6}
+  header{text-align:center;padding:36px 24px;border-bottom:3px solid #38bdf8}
+  header h1{margin:0 0 6px}
+  header p{margin:0;color:#94a3b8}
+  main{max-width:880px;margin:0 auto;padding:32px}
+  .retos{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+  a.reto{display:block;text-decoration:none;border-radius:16px;padding:26px;color:#fff;transition:.15s}
+  a.reto:hover{transform:translateY(-4px)}
+  .flex{background:linear-gradient(135deg,#2563eb,#0ea5e9)}
+  .grid{background:linear-gradient(135deg,#16a34a,#0ea5e9)}
+  a.reto h2{margin:0 0 6px;font-size:1.3rem}
+  a.reto p{margin:0;font-size:.92rem;opacity:.92}
+  a.reto .go{display:inline-block;margin-top:14px;background:rgba(255,255,255,.2);padding:7px 16px;border-radius:8px;font-weight:700;font-size:.85rem}
+  .info{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:20px 24px;margin-top:26px}
+  .info h3{margin-top:0;color:#38bdf8}
+  code{background:#0f172a;border:1px solid #334155;padding:1px 6px;border-radius:5px;color:#fbbf24;font-size:.88em}
+  .files{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .files a{background:#0f172a;border:1px solid #334155;border-radius:8px;padding:8px 14px;color:#38bdf8;text-decoration:none;font-weight:600;font-size:.85rem}
+</style>
+</head>
+<body>
+<header>
+  <h1>🎮 Retos · Flexbox &amp; Grid</h1>
+  <p>Dos desafíos prácticos para aplicar todo lo aprendido · gamificados · personalizables</p>
+</header>
+<main>
+  <div class="retos">
+    <a class="reto flex" href="reto-flexbox.html">
+      <h2>🟦 Reto Flexbox</h2>
+      <p>Construye tu <strong>Bio Card</strong>: la tarjeta de perfil estilo "link in bio" de los creadores. Centrado, columnas, stats, botones y redes.</p>
+      <span class="go">Empezar reto →</span>
+    </a>
+    <a class="reto grid" href="reto-grid.html">
+      <h2>🟩 Reto Grid</h2>
+      <p>Arma tu <strong>Bento Portafolio</strong>: el layout modular de moda. Cuadrícula, celda protagonista 2×2, áreas y responsive.</p>
+      <span class="go">Empezar reto →</span>
+    </a>
+  </div>
+
+  <div class="info">
+    <h3>📦 HTML base de cada reto</h3>
+    <p>Cada reto incluye un botón para copiar su HTML base, pero también puedes abrir los archivos directamente:</p>
+    <div class="files">
+      <a href="base-flexbox.html">📄 base-flexbox.html</a>
+      <a href="base-grid.html">📄 base-grid.html</a>
+    </div>
+  </div>
+
+  <div class="info">
+    <h3>🎯 Cómo funciona</h3>
+    <p>Cada reto tiene misiones con instrucciones detalladas que <strong>solo nombran las propiedades</strong> a usar (HTML y CSS), sin mostrarte el código: tú lo escribes. Vas marcando misiones, sumando puntos y subiendo de rango; tu progreso se guarda solo. La <strong>misión 8</strong> de cada reto es de <strong>personalización</strong>: lo conviertes en algo tuyo y real. Al final, publica cada resultado en <strong>GitHub Pages</strong> y entrega la URL.</p>
+  </div>
+</main>
+</body>
+</html>

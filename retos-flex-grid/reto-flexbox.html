@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🟦 Reto Flexbox · Bio Card</title>
+<style>
+  :root{ --bg:#0f172a;--text:#e2e8f0;--muted:#94a3b8;--panel:#1e293b;--panel2:#0f172a;--border:#334155;--accent:#38bdf8;--pink:#f472b6;--gold:#fbbf24;--green:#86efac;--tools-bg:#082f49;--tools-border:#0ea5e9;--code:#fbbf24;--hint:#cbd5e1; }
+  html[data-theme="light"]{ --bg:#f1f5f9;--text:#1e293b;--muted:#64748b;--panel:#fff;--panel2:#f8fafc;--border:#e2e8f0;--accent:#0284c7;--pink:#db2777;--gold:#b45309;--green:#15803d;--tools-bg:#e0f2fe;--tools-border:#0ea5e9;--code:#b45309;--hint:#475569; }
+  *,*::before,*::after{box-sizing:border-box}
+  body{font-family:system-ui,Segoe UI,Roboto,sans-serif;margin:0;background:var(--bg);color:var(--text);line-height:1.65;transition:.25s}
+  .wrap{max-width:940px;margin:0 auto;padding:24px}
+  header{background:linear-gradient(135deg,#2563eb,#0ea5e9);border-radius:16px;padding:30px;text-align:center;margin-bottom:24px;color:#fff;box-shadow:0 12px 40px rgba(37,99,235,.3)}
+  header h1{margin:0 0 6px;font-size:1.9rem}
+  header p{margin:0;color:#dbeafe}
+  .pill{display:inline-block;background:rgba(255,255,255,.18);padding:4px 14px;border-radius:999px;font-size:.8rem;font-weight:700;margin-top:12px}
+  .hud{position:sticky;top:0;z-index:10;background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:14px 20px;margin-bottom:24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+  .hud .score{font-size:1.35rem;font-weight:800;color:var(--gold)}
+  .bar{flex:1;min-width:130px;height:14px;background:var(--panel2);border-radius:999px;overflow:hidden;border:1px solid var(--border)}
+  .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#22c55e,#84cc16);transition:width .4s}
+  .rank{font-weight:700;color:var(--accent)}
+  .btn{background:var(--border);color:var(--text);border:none;padding:8px 14px;border-radius:8px;cursor:pointer;font-weight:600}
+  .btn:hover{filter:brightness(1.15)}
+  .historia{background:var(--panel);border-left:4px solid var(--gold);border-radius:10px;padding:18px 22px;margin-bottom:24px;color:var(--text)}
+  .reglas{background:var(--panel2);border:1px dashed var(--border);border-radius:12px;padding:18px 22px;margin-bottom:24px}
+  .reglas h3{margin-top:0;color:var(--accent)}
+  .mision{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:18px;transition:.2s}
+  .mision.done{border-color:#22c55e}
+  .mision h2{margin:0 0 4px;font-size:1.12rem;color:var(--pink);display:flex;align-items:center;gap:10px}
+  .lvl{font-size:.68rem;font-weight:800;padding:2px 9px;border-radius:999px}
+  .lvl.easy{background:#22c55e;color:#052e16}.lvl.mid{background:#f59e0b;color:#451a03}.lvl.hard{background:#ef4444;color:#450a0a}.lvl.pers{background:#a855f7;color:#fff}
+  .practica{font-size:.8rem;color:var(--muted);margin:0 0 12px}
+  .mision h4{margin:14px 0 4px;font-size:.8rem;letter-spacing:.04em;text-transform:uppercase;color:var(--accent)}
+  .mision ol,.mision ul{margin:6px 0 0;padding-left:22px}.mision li{margin-bottom:5px}
+  .ok{list-style:none;margin-left:-6px}.ok li::before{content:"✔ ";color:#22c55e;font-weight:800}
+  .pts{float:right;color:var(--gold);font-weight:800;font-size:.9rem}
+  .tools{background:var(--tools-bg);border:1px solid var(--tools-border);border-radius:10px;padding:12px 16px;margin-top:12px}
+  .tools .t{display:block;margin-bottom:6px}.tools .t:last-child{margin-bottom:0}
+  .tools .lab{display:inline-block;min-width:54px;font-weight:800;color:var(--accent);font-size:.8rem}
+  .tag{display:inline-block;background:var(--panel2);border:1px solid var(--border);border-radius:5px;padding:1px 7px;margin:2px 3px;font-size:.82rem;font-family:ui-monospace,Menlo,monospace}
+  .tag.html{color:var(--pink)}.tag.css{color:var(--code)}
+  .hint{background:var(--panel2);border:1px dashed var(--border);border-radius:8px;padding:8px 12px;margin-top:10px;font-size:.85rem;color:var(--hint)}
+  .hint b{color:var(--gold)}
+  .check{display:flex;align-items:center;gap:10px;margin-top:14px;cursor:pointer;user-select:none;font-weight:600;color:var(--green)}
+  .check input{width:20px;height:20px;cursor:pointer;accent-color:#22c55e}
+  code{background:var(--panel2);border:1px solid var(--border);padding:1px 6px;border-radius:5px;color:var(--code);font-size:.88em}
+  pre{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:14px;overflow:auto;font-size:.82rem}
+  .bonus{background:var(--panel);border:1px solid #7c3aed;border-radius:12px;padding:18px 22px;margin-bottom:24px}
+  .bonus h3{margin-top:0;color:#a855f7}
+  .copybtn{background:#22c55e;color:#052e16;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:700;margin-bottom:10px}
+  footer{text-align:center;color:var(--muted);font-size:.85rem;padding:20px}
+  .win{display:none;background:linear-gradient(135deg,#22c55e,#16a34a);border-radius:14px;padding:20px;text-align:center;font-weight:800;font-size:1.15rem;margin-bottom:24px;color:#fff}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>🟦 RETO FLEXBOX</h1>
+    <p>Construye tu <strong>Bio Card</strong> — la tarjeta de perfil estilo "link in bio" de los creadores</p>
+    <span class="pill">🎯 Misiones + personalización + publicación</span>
+  </header>
+
+  <div class="hud">
+    <span class="score">⭐ <span id="score">0</span> / <span id="max">0</span> pts</span>
+    <div class="bar"><i id="fill"></i></div>
+    <span class="rank" id="rank">—</span>
+    <button class="btn" id="theme" onclick="toggleTheme()">🌙 Oscuro</button>
+    <button class="btn" onclick="reset()">Reiniciar</button>
+  </div>
+
+  <div id="win" class="win">🏆 ¡TARJETA LISTA! Dominaste Flexbox. Ahora publícala y compártela al mundo. 🎉</div>
+
+  <div class="historia">
+    <strong>📖 La misión:</strong> Vas a lanzar tu marca personal con una <em>Bio Card</em>: esa tarjeta moderna con tu avatar, tus stats y tus enlaces (como Linktree). Te damos el HTML armado… pero <strong>sin una gota de estilo</strong>. Tu trabajo: darle vida <strong>solo con Flexbox</strong>. Cada misión dice QUÉ lograr y QUÉ propiedades usar — el cómo lo descubres tú. 🚀
+  </div>
+
+  <div class="reglas">
+    <h3>📦 Tu punto de partida</h3>
+    <p>Copia este HTML base (o abre el archivo <code>base-flexbox.html</code>) y trabaja dentro de la etiqueta <code>&lt;style&gt;</code>. El HTML ya está listo; tú escribes el CSS.</p>
+    <button class="copybtn" onclick="copyBase()">📋 Copiar HTML base</button>
+    <pre><code id="baseCode">&lt;!DOCTYPE html&gt;
+&lt;html lang="es"&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+&lt;title&gt;Mi Bio Card&lt;/title&gt;
+&lt;style&gt;
+  *,*::before,*::after{ box-sizing:border-box; }
+  body{ margin:0; font-family:system-ui,sans-serif; background:#0f172a; color:#e2e8f0; }
+  a{ text-decoration:none; color:inherit; }
+
+  /* 🎨 ESCRIBE AQUÍ TU CSS CON FLEXBOX */
+
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="escenario"&gt;
+    &lt;main class="card"&gt;
+      &lt;div class="avatar"&gt;🦊&lt;/div&gt;
+      &lt;h1 class="name"&gt;Tu Nombre&lt;/h1&gt;
+      &lt;p class="bio"&gt;Una frase corta que te describa.&lt;/p&gt;
+      &lt;section class="stats"&gt;
+        &lt;div class="stat"&gt;&lt;b&gt;1.2k&lt;/b&gt;&lt;span&gt;Seguidores&lt;/span&gt;&lt;/div&gt;
+        &lt;div class="stat"&gt;&lt;b&gt;34&lt;/b&gt;&lt;span&gt;Proyectos&lt;/span&gt;&lt;/div&gt;
+        &lt;div class="stat"&gt;&lt;b&gt;8.9k&lt;/b&gt;&lt;span&gt;Likes&lt;/span&gt;&lt;/div&gt;
+      &lt;/section&gt;
+      &lt;nav class="links"&gt;
+        &lt;a href="#" class="link destacado"&gt;🌟 Mi proyecto estrella&lt;/a&gt;
+        &lt;a href="#" class="link"&gt;💼 Portafolio&lt;/a&gt;
+        &lt;a href="#" class="link"&gt;📝 Blog&lt;/a&gt;
+        &lt;a href="#" class="link"&gt;📺 YouTube&lt;/a&gt;
+      &lt;/nav&gt;
+      &lt;div class="social"&gt;
+        &lt;a href="#"&gt;IG&lt;/a&gt;&lt;a href="#"&gt;X&lt;/a&gt;&lt;a href="#"&gt;in&lt;/a&gt;&lt;a href="#"&gt;GH&lt;/a&gt;
+      &lt;/div&gt;
+      &lt;footer class="foot"&gt;Hecho con 💙 y Flexbox&lt;/footer&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+  </div>
+
+  <!-- MISIONES -->
+  <div class="mision" data-pts="10">
+    <span class="pts">+10 pts</span>
+    <h2><span class="lvl easy">FÁCIL</span> Misión 1 · Centra la tarjeta en el escenario</h2>
+    <p class="practica">Concepto: centrado perfecto con flexbox</p>
+    <h4>Qué lograr</h4>
+    <ul><li>La tarjeta (<code>.card</code>) debe quedar <strong>perfectamente centrada</strong> en la pantalla, tanto horizontal como verticalmente, dentro de <code>.escenario</code>.</li>
+    <li>El escenario debe ocupar <strong>todo el alto de la ventana</strong>.</li></ul>
+    <div class="tools">
+      <span class="t"><span class="lab">HTML:</span> <span class="tag html">.escenario</span> <span class="tag html">.card</span> (ya existen)</span>
+      <span class="t"><span class="lab">CSS:</span> <span class="tag css">display: flex</span> <span class="tag css">justify-content</span> <span class="tag css">align-items</span> <span class="tag css">min-height: 100vh</span></span>
+    </div>
+    <ul class="ok"><li>Al abrir, la tarjeta aparece flotando en el centro exacto de la pantalla.</li></ul>
+    <label class="check"><input type="checkbox"> ✅ Misión cumplida</label>
+  </div>
+
+  <div class="mision" data-pts="10">
+    <span class="pts">+10 pts</span>
+    <h2><span class="lvl easy">FÁCIL</span> Misión 2 · Apila el contenido en columna</h2>
+    <p class="practica">Concepto: flex-direction column + align-items + gap</p>
+    <h4>Qué lograr</h4>
+    <ul><li>Dentro de la tarjeta, el avatar, nombre, bio, stats, enlaces, redes y footer deben ir <strong>uno debajo del otro</strong>, centrados y con espacio entre ellos.</li>
+    <li>Dale a la tarjeta un ancho cómodo (no demasiado ancha), fondo, padding y esquinas redondeadas.</li></ul>
+    <div class="tools">
+      <span class="t"><span class="lab">CSS:</span> <span class="tag css">display: flex</span> <span class="tag css">flex-direction: column</span> <span class="tag css">align-items</span> <span class="tag css">gap</span> <span class="tag css">padding</span> <span class="tag css">border-radius</span> <span class="tag css">max-width</span></span>
+    </div>
+    <ul class="ok"><li>El contenido se ve apilado, centrado y con aire entre cada bloque.</li></ul>
+    <label class="check"><input type="checkbox"> ✅ Misión cumplida</label>
+  </div>
+
+  <div class="mision" data-pts="15">
+    <span class="pts">+15 pts</span>
+    <h2><span class="lvl mid">MEDIO</span> Misión 3 · Reparte tus estadísticas</h2>
+    <p class="practica">Concepto: justify-content + flex anidado</p>
+    <h4>Qué lograr</h4>
+    <ul><li>Los 3 bloques de <code>.stats</code> (Seguidores, Proyectos, Likes) deben ir <strong>en una fila</strong> repartidos de forma pareja.</li>
+    <li>Dentro de cada <code>.stat</code>, el número (<code>&lt;b&gt;</code>) va arriba y la etiqueta (<code>&lt;span&gt;</code>) abajo, ambos centrados.</li></ul>
+    <div class="tools">
+      <span class="t"><span class="lab">CSS .stats:</span> <span class="tag css">display: flex</span> <span class="tag css">justify-content</span> <span class="tag css">gap</span></span>
+      <span class="t"><span class="lab">CSS .stat:</span> <span class="tag css">display: flex</span> <span class="tag css">flex-direction: column</span> <span class="tag css">align-items: center</span></span>
+    </div>
+    <ul class="ok"><li>Tres columnas de stats en fila, repartidas, número grande arriba.</li></ul>
+    <label class="check"><input type="checkbox"> ✅ Misión cumplida</label>
+  </div>
+
+  <div class="mision" data-pts="15">
+    <span class="pts">+15 pts</span>
+    <h2><span class="lvl mid">MEDIO</span> Misión 4 · Enlaces como botones a lo ancho</h2>
+    <p class="practica">Concepto: flex column + centrar contenido del item</p>
+    <h4>Qué lograr</h4>
+    <ul><li>Los enlaces de <code>.links</code> deben verse como <strong>botones apilados</strong>, todos del mismo ancho (el de la tarjeta), con separación entre ellos.</li>
+    <li>El texto/emoji de cada botón debe quedar <strong>centrado</strong>.</li>
+    <li>El <code>.destacado</code> debe resaltar (color distinto).</li></ul>
+    <div class="tools">
+      <span class="t"><span class="lab">CSS .links:</span> <span class="tag css">display: flex</span> <span class="tag css">flex-direction: column</span> <span class="tag css">gap</span></span>
+      <span class="t"><span class="lab">CSS .link:</span> <span class="tag css">display: flex</span> <span class="tag css">justify-content: center</span> <span class="tag css">align-items: center</span> <span class="tag css">padding</span> <span class="tag css">border-radius</span> <span class="tag css">background</span></span>
+    </div>
+    <ul class="ok"><li>Botones de igual ancho, apilados, texto centrado, el estrella resalta.</li></ul>
+    <label class="check"><input type="checkbox"> ✅ Misión cumplida</label>
+  </div>
+
+  <div class="mision" data-pts="10">
+    <span class="pts">+10 pts</span>
+    <h2><span class="lvl easy">FÁCIL</span> Misión 5 · Barra de redes en fila</h2>
+    <p class="practica">Concepto: justify-content center + gap</p>
+    <h4>Qué lograr</h4>
+    <ul><li>Los iconos de <code>.social</code> (IG, X, in, GH) deben ir <strong>en una fila centrada</strong>, con separación, y verse como pequeños círculos o botones.</li></ul>
+    <div class="tools">
+      <span class="t"><span class="lab">CSS .social:</span> <span class="tag css">display: flex</span> <span class="tag css">justify-content: center</span> <span class="tag css">gap</span></span>
+      <span class="t"><span class="lab">CSS .social a:</span> <span class="tag css">padding</span> <span class="tag css">border-radius</span> <span class="tag css">background</span></span>
+    </div>
+    <ul class="ok"><li>Iconos sociales alineados en fila al centro.</li></ul>
+    <label class="check"><input type="checkbox"> ✅ Misión cumplida</label>
+  </div>
+
+  <div class="mision" data-pts="10">
+    <span class="pts">+10 pts</span>
+    <h2><span class="lvl mid">MEDIO</span> Misión 6 · El footer siempre al fondo</h2>
+    <p class="practica">Concepto: margin auto dentro de un contenedor flex</p>
+    <h4>Qué lograr</h4>
+    <ul><li>Dale a la tarjeta una <strong>altura mínima</strong> y haz que el <code>.foot</code> quede <strong>pegado al fondo</strong> de la tarjeta, sin importar cuánto contenido haya arriba.</li></ul>
+    <div class="tools">
+      <span class="t"><span class="lab">CSS .card:</span> <span class="tag css">min-height</span></span>
+      <span class="t"><span class="lab">CSS .foot:</span> <span class="tag css">margin-top: auto</span></span>
+    </div>
+    <ul class="ok"><li>El footer se va abajo del todo; el resto del contenido queda arriba.</li></ul>
+    <div class="hint">💡 <b>Truco pro:</b> en un contenedor flex, <code>margin-top:auto</code> en un item "absorbe" todo el espacio libre y empuja ese item al final.</div>
+    <label class="check"><input type="checkbox"> ✅ Misión cumplida</label>
+  </div>
+
+  <div class="mision" data-pts="10">
+    <span class="pts">+10 pts</span>
+    <h2><span class="lvl mid">MEDIO</span> Misión 7 · Que respire en pantallas chicas</h2>
+    <p class="practica">Concepto: flex-wrap + gap</p>
+    <h4>Qué lograr</h4>
+    <ul><li>Haz que la fila de <code>.stats</code> (y la de <code>.social</code> si hace falta) pueda <strong>saltar de línea</strong> cuando no haya espacio, en vez de desbordar.</li></ul>
+    <div class="tools">
+      <span class="t"><span class="lab">CSS:</span> <span class="tag css">flex-wrap: wrap</span> <span class="tag css">gap</span></span>
+    </div>
+    <ul class="ok"><li>Al achicar la ventana, los elementos se reacomodan sin romperse ni desbordar.</li></ul>
+    <label class="check"><input type="checkbox"> ✅ Misión cumplida</label>
+  </div>
+
+  <div class="mision" data-pts="15">
+    <span class="pts">+15 pts</span>
+    <h2><span class="lvl pers">PERSONALIZA</span> Misión 8 · Hazla TUYA</h2>
+    <p class="practica">Aquí editas el contenido y la identidad visual</p>
+    <h4>Qué lograr</h4>
+    <ul>
+      <li>Cambia el <strong>nombre</strong>, el <strong>avatar</strong> (usa otro emoji o una imagen real con <code>&lt;img&gt;</code>) y la <strong>bio</strong>.</li>
+      <li>Reemplaza los enlaces por <strong>2 o más que funcionen de verdad</strong> (tu GitHub, tu Instagram, tu portafolio…).</li>
+      <li>Elige tu <strong>paleta de colores</strong>: fondo del escenario, color de la tarjeta y de los botones. Que se vea con tu estilo.</li>
+    </ul>
+    <div class="tools">
+      <span class="t"><span class="lab">HTML:</span> edita el texto y los <span class="tag html">href</span> de los <span class="tag html">&lt;a&gt;</span></span>
+      <span class="t"><span class="lab">CSS:</span> <span class="tag css">background</span> <span class="tag css">color</span> <span class="tag css">background: linear-gradient()</span> <span class="tag css">box-shadow</span></span>
+    </div>
+    <ul class="ok"><li>La tarjeta refleja tu identidad real y al menos 2 enlaces abren páginas tuyas.</li></ul>
+    <label class="check"><input type="checkbox"> ✅ Misión cumplida</label>
+  </div>
+
+  <div class="bonus">
+    <h3>⭐ BONUS (para los cracks)</h3>
+    <div class="mision" data-pts="10" style="margin-top:10px">
+      <span class="pts">+10 pts</span>
+      <h2><span class="lvl hard">BONUS</span> Vida al pasar el mouse</h2>
+      <p>Haz que los enlaces/botones reaccionen al pasar el cursor (se eleven, cambien color o sombra), de forma suave.</p>
+      <div class="tools"><span class="t"><span class="lab">CSS:</span> <span class="tag css">:hover</span> <span class="tag css">transition</span> <span class="tag css">transform</span> <span class="tag css">box-shadow</span></span></div>
+      <label class="check"><input type="checkbox"> ✅ Logrado</label>
+    </div>
+    <div class="mision" data-pts="10" style="margin-bottom:0">
+      <span class="pts">+10 pts</span>
+      <h2><span class="lvl hard">BONUS</span> Foto real de avatar</h2>
+      <p>Cambia el emoji del avatar por una imagen circular real (usa <code>&lt;img&gt;</code> y dale forma redonda).</p>
+      <div class="tools"><span class="t"><span class="lab">CSS:</span> <span class="tag css">border-radius: 50%</span> <span class="tag css">object-fit: cover</span> <span class="tag css">width / height</span></span></div>
+      <label class="check"><input type="checkbox"> ✅ Logrado</label>
+    </div>
+  </div>
+
+  <div class="reglas">
+    <h3>📤 Publica tu Bio Card en GitHub Pages</h3>
+    <ol>
+      <li>Crea un repositorio público en GitHub (ej. <code>bio-card</code>) y sube tu archivo como <code>index.html</code>.</li>
+      <li>Entra al repo → <strong>Settings → Pages</strong>. En "Branch" elige <code>main</code> y carpeta <code>/ (root)</code>. Guarda.</li>
+      <li>Espera 1–2 min y copia la URL que aparece (algo como <code>https://tu-usuario.github.io/bio-card/</code>).</li>
+      <li>Comprueba que la página carga y que tus enlaces funcionan.</li>
+      <li>Entrega <strong>esa URL</strong> + una captura de tu tarjeta.</li>
+    </ol>
+  </div>
+
+  <footer>🟦 Reto Flexbox · Bio Card · Tu progreso y tu tema se guardan en este navegador.</footer>
+</div>
+
+<script>
+  const KEY='reto-flex-biocard', TKEY='reto-flex-theme';
+  const checks=[...document.querySelectorAll('.mision input[type=checkbox]')];
+  const MAX=[...document.querySelectorAll('.mision')].reduce((a,m)=>a+(+m.dataset.pts||0),0);
+  document.getElementById('max').textContent=MAX;
+  const ranks=[[0,'🥚 Aprendiz de alineación'],[.3,'📐 Cinturón flex'],[.6,'🎯 Domador de ejes'],[.9,'🔥 Maestro Flexbox'],[1,'👑 Leyenda del centrado']];
+  function save(){ localStorage.setItem(KEY,JSON.stringify(checks.map(c=>c.checked))); }
+  function load(){ try{ const s=JSON.parse(localStorage.getItem(KEY)||'[]'); checks.forEach((c,i)=>c.checked=!!s[i]); }catch(e){} }
+  function update(){
+    let sc=0; checks.forEach(c=>{ const m=c.closest('.mision'); const p=+m.dataset.pts;
+      if(c.checked){ sc+=p; m.classList.add('done'); } else m.classList.remove('done'); });
+    document.getElementById('score').textContent=sc;
+    const pct=MAX?sc/MAX:0;
+    document.getElementById('fill').style.width=(pct*100)+'%';
+    let r=ranks[0][1]; ranks.forEach(([t,n])=>{ if(pct>=t) r=n; });
+    document.getElementById('rank').textContent=r;
+    document.getElementById('win').style.display=pct>=1?'block':'none';
+  }
+  function applyTheme(t){ document.documentElement.setAttribute('data-theme',t); document.getElementById('theme').textContent=t==='dark'?'☀️ Claro':'🌙 Oscuro'; }
+  function toggleTheme(){ const n=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark'; localStorage.setItem(TKEY,n); applyTheme(n); }
+  function copyBase(){ const txt=document.getElementById('baseCode').innerText; navigator.clipboard.writeText(txt).then(()=>{ const b=event.target; b.textContent='✅ ¡Copiado!'; setTimeout(()=>b.textContent='📋 Copiar HTML base',1500); }); }
+  function reset(){ if(confirm('¿Reiniciar tu progreso?')){ checks.forEach(c=>c.checked=false); save(); update(); } }
+  window.toggleTheme=toggleTheme; window.copyBase=copyBase; window.reset=reset;
+  checks.forEach(c=>c.addEventListener('change',()=>{ save(); update(); }));
+  applyTheme(localStorage.getItem(TKEY)||'dark'); load(); update();
+</script>
+</body>
+</html>
