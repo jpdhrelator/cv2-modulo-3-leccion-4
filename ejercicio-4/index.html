@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ejercicio 4</title>
+        <style>
+           .flex {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+           }
+           .grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 12px;
+           }
+
+
+           .item{
+            background:#2563eb;
+            color:#fff;
+            padding:18px;
+            border-radius:8px;
+            text-align:center;
+            font-weight:600}
+        </style>
+    </head>
+    <body>
+
+        <div class="flex">
+            <div class="item"> Elemento 1 </div>
+            <div class="item"> Elemento 2 </div>
+            <div class="item"> Elemento 3 </div>
+        </div>
+
+        <hr/>
+
+        <div class="grid">
+            <div class="item"> Elemento 4 </div>
+            <div class="item"> Elemento 5 </div>
+            <div class="item"> Elemento 6 </div>
+            <div class="item"> Elemento 7 </div>
+            <div class="item"> Elemento 8 </div>
+            <div class="item"> Elemento 9 </div>
+        </div>
+
+    </body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ejercicio 5</title>
+        <style>
+            .escenario{position:relative;}
+            .caja{width:130px;padding:10px;border-radius:6px;color:#fff;font-size:.8rem;font-weight:600;margin-bottom:8px}
+            .static{background:#64748b}
+/* */
+            .absolute{position:absolute; top:10px; right:10px; background: #db2777; }
+            .relative{position: relative; top:20px; left:40px;  background:#0ea5e9;  }
+            .sticky  {position: sticky; top:0;  background: #16a34a;}
+        </style>
+    </head>
+    <body style="height: 1000px;">
+        <div class="escenario">
+            <div class="caja static">static</div>
+            <div class="caja relative">relative</div>
+            <div class="caja absolute">absolute</div>
+            
+        </div>
+       <div class="caja sticky">sticky</div>
+
+    </body>
+</html>
