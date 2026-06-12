@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flexbox · Ej 6: flex: grow, shrink y basis</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  body{font-family:system-ui,Segoe UI,Roboto,sans-serif;margin:0;background:#0f172a;color:#e2e8f0;line-height:1.65}
+  .pg-head{padding:24px 32px;border-bottom:3px solid #38bdf8}
+  .pg-head h1{margin:0 0 4px;font-size:1.5rem}
+  .pg-head p{margin:0;color:#94a3b8}
+  .pg-main{max-width:1000px;margin:0 auto;padding:32px}
+  .pg-block{background:#1e293b;border-radius:12px;padding:24px;margin-bottom:26px;border:1px solid #334155}
+  .pg-block h2{margin-top:0;color:#38bdf8;font-size:1.15rem}
+  .pg-block h3{color:#f472b6;font-size:1rem;margin:18px 0 6px}
+  .pg-tag{display:inline-block;background:#0ea5e9;color:#082f49;font-size:.72rem;font-weight:800;padding:2px 10px;border-radius:999px;margin-bottom:8px}
+  .pg-tag.con{background:#a855f7;color:#1e0838}
+  .pg-tag.sol{background:#22c55e;color:#052e16}
+  .pg-tag.reto{background:#f59e0b;color:#451a03}
+  code{background:#0f172a;border:1px solid #334155;padding:1px 6px;border-radius:5px;color:#fbbf24;font-size:.9em}
+  pre{background:#0f172a;border-radius:8px;padding:16px;overflow:auto;border:1px solid #334155}
+  pre code{background:none;border:none;padding:0;color:#e2e8f0;font-size:.86rem;line-height:1.5}
+  .pg-lab{margin:4px 0 4px;color:#7dd3fc;font-weight:700;font-size:.85rem}
+  .pg-reto{border-left:4px solid #f59e0b;background:#422006;padding:12px 16px;border-radius:6px;color:#fde68a}
+  .pg-stage{background:#f1f5f9;color:#0f172a;border-radius:8px;padding:20px}
+  .pg-stage h4{margin:0 0 8px;font-size:.85rem;color:#475569;font-weight:700}
+  .pg-nav{display:flex;justify-content:space-between;margin-top:8px}
+  .pg-nav a{color:#38bdf8;text-decoration:none;font-weight:700}
+  .pg-cap{font-size:.78rem;color:#475569;margin:0 0 4px;font-family:ui-monospace,Menlo,monospace}
+  .pg-key{font-size:.8rem;color:#94a3b8}
+  .pg-grid-idx{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+  .pg-card{display:block;text-decoration:none;background:#1e293b;border:1px solid #334155;border-radius:12px;padding:18px;color:#e2e8f0;transition:.15s}
+  .pg-card:hover{border-color:#38bdf8;transform:translateY(-3px)}
+  .pg-card .n{display:inline-block;background:#0ea5e9;color:#082f49;font-weight:800;width:32px;height:32px;border-radius:8px;text-align:center;line-height:32px;margin-bottom:8px}
+  .pg-card.intro .n{background:#a855f7;color:#1e0838}
+  .pg-card.proj .n{background:#22c55e;color:#052e16}
+  .pg-card h3{margin:0 0 4px;color:#38bdf8;font-size:1rem}
+  .pg-card p{margin:0;font-size:.85rem;color:#94a3b8}
+
+/* ====== CSS del ejercicio (se renderiza en vivo) ====== */
+.d{ display:flex; gap:10px; background:#fff; border:1px solid #cbd5e1; border-radius:6px; padding:10px; margin-bottom:12px; }
+.it{ background:#0ea5e9; color:#fff; padding:16px; border-radius:6px; font-weight:700; text-align:center; }
+.f1{ flex:1; }
+.f2{ flex:2; }
+.side{ flex:0 0 200px; background:#334155; }
+</style>
+</head>
+<body>
+<div class="pg-head">
+  <h1>Flexbox · Ejercicio 6 de 10: flex: grow, shrink y basis</h1>
+  <p>Repartir el espacio disponible</p>
+</div>
+<div class="pg-main">
+
+  <div class="pg-block">
+    <span class="pg-tag" style="background:#f59e0b;color:#451a03">MEDIO</span>
+    <span class="pg-tag con">CONCEPTO</span>
+    <h2>flex: grow, shrink y basis</h2>
+    <p>Las propiedades van en los <strong>items</strong> (no en el contenedor) y deciden cómo se reparte el espacio:</p>
+<p><code>flex-grow</code>: cuánto <em>crece</em> un item para ocupar el espacio sobrante (0 = no crece).<br>
+<code>flex-shrink</code>: cuánto se <em>encoge</em> si falta espacio.<br>
+<code>flex-basis</code>: el tamaño base antes de crecer o encoger.</p>
+<p>El atajo <code>flex: 1</code> equivale a <code>flex-grow:1; flex-shrink:1; flex-basis:0</code> → "toma una parte igual del espacio". Un patrón clásico: una barra lateral de ancho fijo y un contenido principal con <code>flex:1</code> que ocupa el resto.</p>
+  </div>
+
+  <div class="pg-block">
+    <span class="pg-tag">RESULTADO EN VIVO</span>
+    <h2>Así se ve 👇</h2>
+    <div class="pg-stage">
+      <p class="pg-cap">Los tres con flex: 1 → se reparten igual</p>
+      <div class="d"><span class="it f1">flex:1</span><span class="it f1">flex:1</span><span class="it f1">flex:1</span></div>
+      <p class="pg-cap">El del centro con flex: 2 → toma el doble</p>
+      <div class="d"><span class="it f1">flex:1</span><span class="it f2">flex:2</span><span class="it f1">flex:1</span></div>
+      <p class="pg-cap">Sidebar fija + main flexible</p>
+      <div class="d"><span class="it side">sidebar 200px</span><span class="it f1">main (flex:1)</span></div>
+    </div>
+  </div>
+
+  <div class="pg-block">
+    <span class="pg-tag sol">SOLUCIÓN (HTML + CSS)</span>
+    <h2>El código</h2>
+    <p class="pg-lab">HTML</p>
+    <pre><code>      &lt;p class=&quot;pg-cap&quot;&gt;Los tres con flex: 1 → se reparten igual&lt;/p&gt;
+      &lt;div class=&quot;d&quot;&gt;&lt;span class=&quot;it f1&quot;&gt;flex:1&lt;/span&gt;&lt;span class=&quot;it f1&quot;&gt;flex:1&lt;/span&gt;&lt;span class=&quot;it f1&quot;&gt;flex:1&lt;/span&gt;&lt;/div&gt;
+      &lt;p class=&quot;pg-cap&quot;&gt;El del centro con flex: 2 → toma el doble&lt;/p&gt;
+      &lt;div class=&quot;d&quot;&gt;&lt;span class=&quot;it f1&quot;&gt;flex:1&lt;/span&gt;&lt;span class=&quot;it f2&quot;&gt;flex:2&lt;/span&gt;&lt;span class=&quot;it f1&quot;&gt;flex:1&lt;/span&gt;&lt;/div&gt;
+      &lt;p class=&quot;pg-cap&quot;&gt;Sidebar fija + main flexible&lt;/p&gt;
+      &lt;div class=&quot;d&quot;&gt;&lt;span class=&quot;it side&quot;&gt;sidebar 200px&lt;/span&gt;&lt;span class=&quot;it f1&quot;&gt;main (flex:1)&lt;/span&gt;&lt;/div&gt;</code></pre>
+    <p class="pg-lab">CSS</p>
+    <pre><code>.d{ display:flex; gap:10px; background:#fff; border:1px solid #cbd5e1; border-radius:6px; padding:10px; margin-bottom:12px; }
+.it{ background:#0ea5e9; color:#fff; padding:16px; border-radius:6px; font-weight:700; text-align:center; }
+.f1{ flex:1; }
+.f2{ flex:2; }
+.side{ flex:0 0 200px; background:#334155; }</code></pre>
+  </div>
+
+  <div class="pg-block">
+    <span class="pg-tag reto">RETO EXTRA</span>
+    <div class="pg-reto">🔥 Cambia el item del centro a <code>flex: 3</code> y los laterales en <code>flex:1</code>. ¿Qué proporción ocupa cada uno? (Pista: 1 + 3 + 1 = 5 partes).</div>
+  </div>
+
+  <div class="pg-nav">
+    <a href="05-flex-wrap-gap.html">← Ej 5</a>
+    <a href="07-align-self-order.html">Ej 7 →</a>
+  </div>
+</div>
+</body>
+</html>

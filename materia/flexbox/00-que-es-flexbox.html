@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¿Qué es Flexbox?</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  body{font-family:system-ui,Segoe UI,Roboto,sans-serif;margin:0;background:#0f172a;color:#e2e8f0;line-height:1.65}
+  .pg-head{padding:24px 32px;border-bottom:3px solid #38bdf8}
+  .pg-head h1{margin:0 0 4px;font-size:1.5rem}
+  .pg-head p{margin:0;color:#94a3b8}
+  .pg-main{max-width:1000px;margin:0 auto;padding:32px}
+  .pg-block{background:#1e293b;border-radius:12px;padding:24px;margin-bottom:26px;border:1px solid #334155}
+  .pg-block h2{margin-top:0;color:#38bdf8;font-size:1.15rem}
+  .pg-tag{display:inline-block;background:#0ea5e9;color:#082f49;font-size:.72rem;font-weight:800;padding:2px 10px;border-radius:999px;margin-bottom:8px}
+  .pg-tag.con{background:#a855f7;color:#1e0838}
+  .pg-tag.sol{background:#22c55e;color:#052e16}
+  .pg-tag.reto{background:#f59e0b;color:#451a03}
+  .pg-tag.cont{background:#38bdf8;color:#06283b}
+  .pg-tag.item{background:#f472b6;color:#3b0824}
+  code{background:#0f172a;border:1px solid #334155;padding:1px 6px;border-radius:5px;color:#fbbf24;font-size:.9em}
+  pre{background:#0f172a;border-radius:8px;padding:16px;overflow:auto;border:1px solid #334155}
+  pre code{background:none;border:none;padding:0;color:#e2e8f0;font-size:.86rem;line-height:1.5}
+  .pg-lab{margin:4px 0 4px;color:#7dd3fc;font-weight:700;font-size:.85rem}
+  .pg-reto{border-left:4px solid #f59e0b;background:#422006;padding:12px 16px;border-radius:6px;color:#fde68a}
+  .pg-stage{background:#f1f5f9;color:#0f172a;border-radius:8px;padding:20px}
+  .pg-stage h4{margin:0 0 8px;font-size:.85rem;color:#475569;font-weight:700}
+  .pg-nav{display:flex;justify-content:space-between;margin-top:8px}
+  .pg-nav a{color:#38bdf8;text-decoration:none;font-weight:700}
+  .pg-cap{font-size:.78rem;color:#475569;margin:0 0 4px;font-family:ui-monospace,Menlo,monospace}
+  .pg-key{font-size:.8rem;color:#94a3b8}
+  /* Referencia de propiedades */
+  .prop{background:#0f172a;border:1px solid #334155;border-radius:10px;padding:16px 18px;margin-bottom:14px}
+  .prop .name{font-family:ui-monospace,Menlo,monospace;color:#fbbf24;font-weight:800;font-size:1rem}
+  .prop .badge{font-size:.65rem;font-weight:800;padding:1px 8px;border-radius:999px;margin-left:8px;vertical-align:middle}
+  .prop .badge.c{background:#38bdf8;color:#06283b}
+  .prop .badge.i{background:#f472b6;color:#3b0824}
+  .prop .what{color:#cbd5e1;margin:6px 0 10px;font-size:.92rem}
+  .vrow{display:grid;grid-template-columns:160px 1fr;gap:6px 14px;align-items:start}
+  .vrow .v{font-family:ui-monospace,Menlo,monospace;color:#7dd3fc;font-size:.84rem}
+  .vrow .d{color:#cbd5e1;font-size:.86rem}
+  .vrow .v.def::after{content:" ·def";color:#22c55e;font-size:.7rem}
+  .demo-axis{display:flex;gap:10px;background:#fff;border:2px dashed #94a3b8;border-radius:8px;padding:14px}
+  .ax-item{background:#2563eb;color:#fff;padding:14px 20px;border-radius:6px;font-weight:700}
+  .contenedor{display:flex;gap:12px;justify-content:center}
+  .item{background:#7c3aed;color:#fff;padding:16px 22px;border-radius:8px;font-weight:700}
+  @media(max-width:560px){.vrow{grid-template-columns:1fr}}
+
+  .eye-toggle{position:fixed;top:10px;right:10px;z-index:50;background:transparent;border:none;color:#64748b;width:24px;height:24px;padding:0;line-height:1;cursor:pointer;font-size:.85rem;opacity:.45;transition:opacity .15s}
+  .eye-toggle:hover{opacity:1;color:#94a3b8}
+  .next-hidden{display:none !important}
+</style>
+</head>
+<body>
+<button id="eyeBtn" class="eye-toggle" title="Mostrar/ocultar el enlace a la página siguiente" onclick="toggleNext()">👁️</button>
+
+<div class="pg-head">
+  <h1>🟦 ¿Qué es Flexbox?</h1>
+  <p>El sistema de layout en una dimensión · guía completa de propiedades</p>
+</div>
+<div class="pg-main">
+
+  <div class="pg-block">
+    <span class="pg-tag con">DEFINICIÓN</span>
+    <h2>La idea en una frase</h2>
+    <p><strong>Flexbox</strong> (Flexible Box Layout) es un modelo de CSS para distribuir elementos a lo largo de <strong>un solo eje</strong>: una fila <em>o</em> una columna. Resuelve fácil lo que antes costaba: alinear, centrar, repartir espacio y crear barras o listas que se adaptan.</p>
+    <p>Regla de oro: activas flexbox con <code>display:flex</code> en un <strong>contenedor</strong>, y desde ahí controlas a sus <strong>hijos directos</strong>. Hay dos grupos de propiedades: las del <span class="pg-tag cont">CONTENEDOR</span> y las del <span class="pg-tag item">ITEM</span>.</p>
+  </div>
+
+  <div class="pg-block">
+    <span class="pg-tag con">LOS DOS EJES</span>
+    <h2>Entender los ejes lo es TODO</h2>
+    <p>Flexbox trabaja con dos ejes perpendiculares. Saber cuál es cuál te dice qué propiedad usar:</p>
+    <p><strong>Eje principal (main axis)</strong> → la dirección en la que se colocan los items. Lo define <code>flex-direction</code> y lo controla <code>justify-content</code>.<br>
+    <strong>Eje cruzado (cross axis)</strong> → perpendicular al principal. Lo controla <code>align-items</code>.</p>
+    <p>⚠️ Importante: si cambias la dirección a <code>column</code>, los ejes se <strong>intercambian</strong>: el principal pasa a ser vertical. Por eso <code>justify-content</code> deja de mover en horizontal y pasa a mover en vertical.</p>
+    <div class="pg-stage">
+      <h4>Contenedor flex · el eje principal va de izquierda a derecha →</h4>
+      <div class="demo-axis"><span class="ax-item">item 1</span><span class="ax-item">item 2</span><span class="ax-item">item 3</span></div>
+      <p class="pg-cap" style="margin-top:8px">eje principal → justify-content · eje cruzado ↓ align-items</p>
+    </div>
+  </div>
+
+  <div class="pg-block">
+    <span class="pg-tag cont">PROPIEDADES DEL CONTENEDOR</span>
+    <h2>Van en el padre (display:flex)</h2>
+
+    <div class="prop">
+      <span class="name">display</span><span class="badge c">contenedor</span>
+      <p class="what">Activa flexbox. Convierte los hijos directos en flex items.</p>
+      <div class="vrow">
+        <span class="v">flex</span><span class="d">El contenedor se comporta como bloque (ocupa toda la línea).</span>
+        <span class="v">inline-flex</span><span class="d">El contenedor se comporta como inline (fluye con el texto).</span>
+      </div>
+    </div>
+
+    <div class="prop">
+      <span class="name">flex-direction</span><span class="badge c">contenedor</span>
+      <p class="what">Define la dirección del eje principal: en qué sentido se colocan los items. <span class="pg-key">Ej 2</span></p>
+      <div class="vrow">
+        <span class="v def">row</span><span class="d">En fila, de izquierda a derecha.</span>
+        <span class="v">row-reverse</span><span class="d">En fila, de derecha a izquierda.</span>
+        <span class="v">column</span><span class="d">En columna, de arriba a abajo (¡los ejes se intercambian!).</span>
+        <span class="v">column-reverse</span><span class="d">En columna, de abajo a arriba.</span>
+      </div>
+    </div>
+
+    <div class="prop">
+      <span class="name">flex-wrap</span><span class="badge c">contenedor</span>
+      <p class="what">Decide si los items pueden saltar a varias líneas cuando no caben. <span class="pg-key">Ej 5</span></p>
+      <div class="vrow">
+        <span class="v def">nowrap</span><span class="d">Una sola línea; los items se encogen para caber.</span>
+        <span class="v">wrap</span><span class="d">Saltan a la siguiente línea manteniendo su tamaño.</span>
+        <span class="v">wrap-reverse</span><span class="d">Igual que wrap pero las líneas se apilan al revés.</span>
+      </div>
+    </div>
+
+    <div class="prop">
+      <span class="name">justify-content</span><span class="badge c">contenedor</span>
+      <p class="what">Reparte los items y el espacio sobrante en el <strong>eje principal</strong>. <span class="pg-key">Ej 3</span></p>
+      <div class="vrow">
+        <span class="v def">flex-start</span><span class="d">Todos al inicio.</span>
+        <span class="v">center</span><span class="d">Agrupados al centro.</span>
+        <span class="v">flex-end</span><span class="d">Todos al final.</span>
+        <span class="v">space-between</span><span class="d">Primero y último a los bordes; el espacio se reparte entre ellos.</span>
+        <span class="v">space-around</span><span class="d">Espacio igual alrededor de cada item (bordes con media porción).</span>
+        <span class="v">space-evenly</span><span class="d">Espacio idéntico entre items y en los bordes.</span>
+      </div>
+    </div>
+
+    <div class="prop">
+      <span class="name">align-items</span><span class="badge c">contenedor</span>
+      <p class="what">Alinea los items en el <strong>eje cruzado</strong>. Necesita altura en el contenedor para notarse. <span class="pg-key">Ej 4</span></p>
+      <div class="vrow">
+        <span class="v def">stretch</span><span class="d">Los items se estiran para llenar el alto.</span>
+        <span class="v">flex-start</span><span class="d">Alineados arriba.</span>
+        <span class="v">center</span><span class="d">Centrados verticalmente.</span>
+        <span class="v">flex-end</span><span class="d">Alineados abajo.</span>
+        <span class="v">baseline</span><span class="d">Alineados por la línea base del texto.</span>
+      </div>
+    </div>
+
+    <div class="prop">
+      <span class="name">align-content</span><span class="badge c">contenedor</span>
+      <p class="what">Alinea las <strong>filas completas</strong> en el eje cruzado. Solo aplica si hay varias líneas (con <code>flex-wrap:wrap</code>).</p>
+      <div class="vrow">
+        <span class="v def">stretch</span><span class="d">Las filas se estiran para llenar el alto.</span>
+        <span class="v">flex-start / center / flex-end</span><span class="d">Agrupa las filas arriba / al centro / abajo.</span>
+        <span class="v">space-between / around / evenly</span><span class="d">Reparte el espacio entre las filas.</span>
+      </div>
+    </div>
+
+    <div class="prop">
+      <span class="name">gap</span><span class="badge c">contenedor</span>
+      <p class="what">Espacio entre items (y entre filas si hay wrap), sin usar márgenes. <span class="pg-key">Ej 5</span></p>
+      <div class="vrow">
+        <span class="v">gap: 12px</span><span class="d">Mismo espacio en filas y columnas.</span>
+        <span class="v">row-gap / column-gap</span><span class="d">Controlar por separado el espacio vertical y horizontal.</span>
+      </div>
+    </div>
+
+    <div class="prop">
+      <span class="name">flex-flow</span><span class="badge c">contenedor</span>
+      <p class="what">Atajo de <code>flex-direction</code> + <code>flex-wrap</code> en una línea.</p>
+      <div class="vrow">
+        <span class="v">flex-flow: row wrap</span><span class="d">Equivale a direction:row; wrap:wrap.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pg-block">
+    <span class="pg-tag item">PROPIEDADES DEL ITEM</span>
+    <h2>Van en cada hijo</h2>
+
+    <div class="prop">
+      <span class="name">order</span><span class="badge i">item</span>
+      <p class="what">Cambia el orden visual sin tocar el HTML. <span class="pg-key">Ej 7</span></p>
+      <div class="vrow">
+        <span class="v def">0</span><span class="d">Valor por defecto de todos los items.</span>
+        <span class="v">número</span><span class="d">Menor = más al principio (admite negativos); mayor = más al final.</span>
+      </div>
+    </div>
+
+    <div class="prop">
+      <span class="name">flex-grow</span><span class="badge i">item</span>
+      <p class="what">Cuánto CRECE el item para ocupar el espacio sobrante. <span class="pg-key">Ej 6</span></p>
+      <div class="vrow">
+        <span class="v def">0</span><span class="d">No crece (mantiene su tamaño base).</span>
+        <span class="v">1, 2, 3…</span><span class="d">Reparte el espacio sobrante en proporción a ese número.</span>
+      </div>
+    </div>
+
+    <div class="prop">
+      <span class="name">flex-shrink</span><span class="badge i">item</span>
+      <p class="what">Cuánto se ENCOGE el item si falta espacio. <span class="pg-key">Ej 6</span></p>
+      <div class="vrow">
+        <span class="v def">1</span><span class="d">Se encoge si es necesario.</span>
+        <span class="v">0</span><span class="d">Nunca se encoge (mantiene su tamaño aunque desborde).</span>
+      </div>
+    </div>
+
+    <div class="prop">
+      <span class="name">flex-basis</span><span class="badge i">item</span>
+      <p class="what">El tamaño base del item antes de crecer o encoger. <span class="pg-key">Ej 6</span></p>
+      <div class="vrow">
+        <span class="v def">auto</span><span class="d">Toma el tamaño de su contenido o su width/height.</span>
+        <span class="v">200px / 30%</span><span class="d">Tamaño base explícito.</span>
+        <span class="v">0</span><span class="d">Ignora el contenido y reparte solo por flex-grow.</span>
+      </div>
+    </div>
+
+    <div class="prop">
+      <span class="name">flex</span><span class="badge i">item</span>
+      <p class="what">Atajo de grow + shrink + basis. Es la forma más usada. <span class="pg-key">Ej 6</span></p>
+      <div class="vrow">
+        <span class="v">flex: 1</span><span class="d">= 1 1 0 → toma una parte igual del espacio. El más común.</span>
+        <span class="v">flex: 0 0 200px</span><span class="d">Tamaño fijo de 200px (no crece ni se encoge).</span>
+        <span class="v">flex: auto</span><span class="d">= 1 1 auto → crece y se encoge según su contenido.</span>
+      </div>
+    </div>
+
+    <div class="prop">
+      <span class="name">align-self</span><span class="badge i">item</span>
+      <p class="what">Alinea SOLO a ese item en el eje cruzado, ignorando el align-items del contenedor. <span class="pg-key">Ej 7</span></p>
+      <div class="vrow">
+        <span class="v def">auto</span><span class="d">Hereda el align-items del contenedor.</span>
+        <span class="v">flex-start / center / flex-end / stretch / baseline</span><span class="d">Mismas opciones que align-items, pero individuales.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pg-block">
+    <span class="pg-tag sol">MINI DEMO</span>
+    <h2>El "hola mundo" de flexbox</h2>
+    <p class="pg-lab">HTML</p>
+    <pre><code>&lt;div class=&quot;contenedor&quot;&gt;
+  &lt;div class=&quot;item&quot;&gt;A&lt;/div&gt;
+  &lt;div class=&quot;item&quot;&gt;B&lt;/div&gt;
+  &lt;div class=&quot;item&quot;&gt;C&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    <p class="pg-lab">CSS</p>
+    <pre><code>.contenedor{
+  display: flex;            /* activa flexbox */
+  gap: 12px;               /* espacio entre items */
+  justify-content: center; /* centra en el eje principal */
+}</code></pre>
+    <div class="pg-stage" style="margin-top:12px">
+      <div class="contenedor"><div class="item">A</div><div class="item">B</div><div class="item">C</div></div>
+    </div>
+  </div>
+
+  <div class="pg-block">
+    <span class="pg-tag reto">CÓMO SEGUIR</span>
+    <div class="pg-reto">👉 Ya tienes el mapa completo de propiedades. Abre el <strong>Ejercicio 1</strong> y avanza en orden hasta el 10 (proyecto final), viendo cada propiedad en acción. Ten siempre DevTools (F12) abierto para cambiar valores y ver el efecto al instante.</div>
+    <div class="pg-nav"><a href="index.html">← Índice</a><a id="nextLink" href="01-display-flex.html">Ej 1: display:flex →</a></div>
+  </div>
+</div>
+<script>
+(function(){
+  var KEY='intro-next-hidden';
+  var link=document.getElementById('nextLink');
+  var btn=document.getElementById('eyeBtn');
+  function apply(h){ if(link) link.classList.toggle('next-hidden',h); btn.textContent=h?'🙈':'👁️'; btn.title=h?'Mostrar enlace a la página siguiente':'Ocultar enlace a la página siguiente'; }
+  var hidden=localStorage.getItem(KEY)==='1';
+  apply(hidden);
+  window.toggleNext=function(){ hidden=!hidden; localStorage.setItem(KEY,hidden?'1':'0'); apply(hidden); };
+})();
+</script>
+</body>
+</html>

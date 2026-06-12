@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🟦 Flexbox · Índice</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  body{font-family:system-ui,Segoe UI,Roboto,sans-serif;margin:0;background:#0f172a;color:#e2e8f0;line-height:1.65}
+  .pg-head{padding:24px 32px;border-bottom:3px solid #38bdf8}
+  .pg-head h1{margin:0 0 4px;font-size:1.5rem}
+  .pg-head p{margin:0;color:#94a3b8}
+  .pg-main{max-width:1000px;margin:0 auto;padding:32px}
+  .pg-block{background:#1e293b;border-radius:12px;padding:24px;margin-bottom:26px;border:1px solid #334155}
+  .pg-block h2{margin-top:0;color:#38bdf8;font-size:1.15rem}
+  .pg-block h3{color:#f472b6;font-size:1rem;margin:18px 0 6px}
+  .pg-tag{display:inline-block;background:#0ea5e9;color:#082f49;font-size:.72rem;font-weight:800;padding:2px 10px;border-radius:999px;margin-bottom:8px}
+  .pg-tag.con{background:#a855f7;color:#1e0838}
+  .pg-tag.sol{background:#22c55e;color:#052e16}
+  .pg-tag.reto{background:#f59e0b;color:#451a03}
+  code{background:#0f172a;border:1px solid #334155;padding:1px 6px;border-radius:5px;color:#fbbf24;font-size:.9em}
+  pre{background:#0f172a;border-radius:8px;padding:16px;overflow:auto;border:1px solid #334155}
+  pre code{background:none;border:none;padding:0;color:#e2e8f0;font-size:.86rem;line-height:1.5}
+  .pg-lab{margin:4px 0 4px;color:#7dd3fc;font-weight:700;font-size:.85rem}
+  .pg-reto{border-left:4px solid #f59e0b;background:#422006;padding:12px 16px;border-radius:6px;color:#fde68a}
+  .pg-stage{background:#f1f5f9;color:#0f172a;border-radius:8px;padding:20px}
+  .pg-stage h4{margin:0 0 8px;font-size:.85rem;color:#475569;font-weight:700}
+  .pg-nav{display:flex;justify-content:space-between;margin-top:8px}
+  .pg-nav a{color:#38bdf8;text-decoration:none;font-weight:700}
+  .pg-cap{font-size:.78rem;color:#475569;margin:0 0 4px;font-family:ui-monospace,Menlo,monospace}
+  .pg-key{font-size:.8rem;color:#94a3b8}
+  .pg-grid-idx{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+  .pg-card{display:block;text-decoration:none;background:#1e293b;border:1px solid #334155;border-radius:12px;padding:18px;color:#e2e8f0;transition:.15s}
+  .pg-card:hover{border-color:#38bdf8;transform:translateY(-3px)}
+  .pg-card .n{display:inline-block;background:#0ea5e9;color:#082f49;font-weight:800;width:32px;height:32px;border-radius:8px;text-align:center;line-height:32px;margin-bottom:8px}
+  .pg-card.intro .n{background:#a855f7;color:#1e0838}
+  .pg-card.proj .n{background:#22c55e;color:#052e16}
+  .pg-card h3{margin:0 0 4px;color:#38bdf8;font-size:1rem}
+  .pg-card p{margin:0;font-size:.85rem;color:#94a3b8}
+</style>
+</head>
+<body>
+<div class="pg-head"><h1>🟦 Flexbox</h1><p>Sistema de layout en una dimensión · explicación + 10 ejercicios</p></div>
+<div class="pg-main">
+  <div class="pg-block"><span class="pg-tag con">PARA LA CLASE</span><h2>Flexbox en orden</h2>
+<p class="pg-key">Recorre la explicación y luego los 10 ejercicios. Cada uno tiene concepto, resultado en vivo y el código HTML + CSS para que practiques. El ejercicio 10 integra todo en una página real. Abre cada archivo y usa DevTools (F12) para experimentar.</p></div>
+  <div class="pg-grid-idx">
+    <a class="pg-card intro" href="00-que-es-flexbox.html"><span class="n">★</span><h3>¿Qué es Flexbox?</h3><p>Conceptos, ejes y propiedades</p></a>
+    <a class="pg-card " href="01-display-flex.html"><span class="n">1</span><h3>display: flex</h3><p>display:flex y los items</p></a>
+    <a class="pg-card " href="02-flex-direction.html"><span class="n">2</span><h3>flex-direction</h3><p>Dirección del eje principal</p></a>
+    <a class="pg-card " href="03-justify-content.html"><span class="n">3</span><h3>justify-content</h3><p>Repartir en eje principal</p></a>
+    <a class="pg-card " href="04-align-items.html"><span class="n">4</span><h3>align-items</h3><p>Alinear en eje cruzado</p></a>
+    <a class="pg-card " href="05-flex-wrap-gap.html"><span class="n">5</span><h3>flex-wrap y gap</h3><p>Saltos de línea y gap</p></a>
+    <a class="pg-card " href="06-flex-grow-basis.html"><span class="n">6</span><h3>flex: grow, shrink y basis</h3><p>Repartir espacio (flex)</p></a>
+    <a class="pg-card " href="07-align-self-order.html"><span class="n">7</span><h3>align-self y order</h3><p>Excepciones por item</p></a>
+    <a class="pg-card " href="08-centrado-perfecto.html"><span class="n">8</span><h3>Centrado perfecto</h3><p>Centrado perfecto</p></a>
+    <a class="pg-card " href="09-navbar-responsive.html"><span class="n">9</span><h3>Navbar con flexbox</h3><p>Navbar real</p></a>
+    <a class="pg-card proj" href="10-proyecto-final.html"><span class="n">10</span><h3>Proyecto: página completa con flexbox</h3><p>Proyecto: página completa</p></a>
+  </div>
+</div>
+</body>
+</html>

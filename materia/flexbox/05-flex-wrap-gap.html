@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flexbox · Ej 5: flex-wrap y gap</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  body{font-family:system-ui,Segoe UI,Roboto,sans-serif;margin:0;background:#0f172a;color:#e2e8f0;line-height:1.65}
+  .pg-head{padding:24px 32px;border-bottom:3px solid #38bdf8}
+  .pg-head h1{margin:0 0 4px;font-size:1.5rem}
+  .pg-head p{margin:0;color:#94a3b8}
+  .pg-main{max-width:1000px;margin:0 auto;padding:32px}
+  .pg-block{background:#1e293b;border-radius:12px;padding:24px;margin-bottom:26px;border:1px solid #334155}
+  .pg-block h2{margin-top:0;color:#38bdf8;font-size:1.15rem}
+  .pg-block h3{color:#f472b6;font-size:1rem;margin:18px 0 6px}
+  .pg-tag{display:inline-block;background:#0ea5e9;color:#082f49;font-size:.72rem;font-weight:800;padding:2px 10px;border-radius:999px;margin-bottom:8px}
+  .pg-tag.con{background:#a855f7;color:#1e0838}
+  .pg-tag.sol{background:#22c55e;color:#052e16}
+  .pg-tag.reto{background:#f59e0b;color:#451a03}
+  code{background:#0f172a;border:1px solid #334155;padding:1px 6px;border-radius:5px;color:#fbbf24;font-size:.9em}
+  pre{background:#0f172a;border-radius:8px;padding:16px;overflow:auto;border:1px solid #334155}
+  pre code{background:none;border:none;padding:0;color:#e2e8f0;font-size:.86rem;line-height:1.5}
+  .pg-lab{margin:4px 0 4px;color:#7dd3fc;font-weight:700;font-size:.85rem}
+  .pg-reto{border-left:4px solid #f59e0b;background:#422006;padding:12px 16px;border-radius:6px;color:#fde68a}
+  .pg-stage{background:#f1f5f9;color:#0f172a;border-radius:8px;padding:20px}
+  .pg-stage h4{margin:0 0 8px;font-size:.85rem;color:#475569;font-weight:700}
+  .pg-nav{display:flex;justify-content:space-between;margin-top:8px}
+  .pg-nav a{color:#38bdf8;text-decoration:none;font-weight:700}
+  .pg-cap{font-size:.78rem;color:#475569;margin:0 0 4px;font-family:ui-monospace,Menlo,monospace}
+  .pg-key{font-size:.8rem;color:#94a3b8}
+  .pg-grid-idx{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+  .pg-card{display:block;text-decoration:none;background:#1e293b;border:1px solid #334155;border-radius:12px;padding:18px;color:#e2e8f0;transition:.15s}
+  .pg-card:hover{border-color:#38bdf8;transform:translateY(-3px)}
+  .pg-card .n{display:inline-block;background:#0ea5e9;color:#082f49;font-weight:800;width:32px;height:32px;border-radius:8px;text-align:center;line-height:32px;margin-bottom:8px}
+  .pg-card.intro .n{background:#a855f7;color:#1e0838}
+  .pg-card.proj .n{background:#22c55e;color:#052e16}
+  .pg-card h3{margin:0 0 4px;color:#38bdf8;font-size:1rem}
+  .pg-card p{margin:0;font-size:.85rem;color:#94a3b8}
+
+/* ====== CSS del ejercicio (se renderiza en vivo) ====== */
+.d{ display:flex; gap:10px; background:#fff; border:1px solid #cbd5e1; border-radius:6px; padding:10px; margin-bottom:12px; }
+.nowrap{ flex-wrap:nowrap; }
+.wrap  { flex-wrap:wrap; }
+.it{ background:#db2777; color:#fff; padding:14px 22px; border-radius:6px; font-weight:700; white-space:nowrap; }
+</style>
+</head>
+<body>
+<div class="pg-head">
+  <h1>Flexbox · Ejercicio 5 de 10: flex-wrap y gap</h1>
+  <p>Cuando los items no caben</p>
+</div>
+<div class="pg-main">
+
+  <div class="pg-block">
+    <span class="pg-tag" style="background:#f59e0b;color:#451a03">MEDIO</span>
+    <span class="pg-tag con">CONCEPTO</span>
+    <h2>flex-wrap y gap</h2>
+    <p>Por defecto, los flex items se <strong>encogen</strong> para caber todos en una sola línea (<code>flex-wrap: nowrap</code>). Con <code>flex-wrap: wrap</code> permites que, cuando no quepan, <strong>salten a la siguiente línea</strong> manteniendo su tamaño.</p>
+<p><code>gap</code> define el espacio entre items (y entre filas cuando hay wrap), sin necesidad de márgenes. La combinación <code>flex-wrap: wrap</code> + <code>gap</code> es la base de las galerías y rejillas de tarjetas flexibles.</p>
+  </div>
+
+  <div class="pg-block">
+    <span class="pg-tag">RESULTADO EN VIVO</span>
+    <h2>Así se ve 👇</h2>
+    <div class="pg-stage">
+      <p class="pg-cap">flex-wrap: nowrap — se encogen para caber</p>
+      <div class="d nowrap"><span class="it">Item 1</span><span class="it">Item 2</span><span class="it">Item 3</span><span class="it">Item 4</span><span class="it">Item 5</span></div>
+      <p class="pg-cap">flex-wrap: wrap — saltan de línea</p>
+      <div class="d wrap"><span class="it">Item 1</span><span class="it">Item 2</span><span class="it">Item 3</span><span class="it">Item 4</span><span class="it">Item 5</span></div>
+    </div>
+  </div>
+
+  <div class="pg-block">
+    <span class="pg-tag sol">SOLUCIÓN (HTML + CSS)</span>
+    <h2>El código</h2>
+    <p class="pg-lab">HTML</p>
+    <pre><code>      &lt;p class=&quot;pg-cap&quot;&gt;flex-wrap: nowrap — se encogen para caber&lt;/p&gt;
+      &lt;div class=&quot;d nowrap&quot;&gt;&lt;span class=&quot;it&quot;&gt;Item 1&lt;/span&gt;&lt;span class=&quot;it&quot;&gt;Item 2&lt;/span&gt;&lt;span class=&quot;it&quot;&gt;Item 3&lt;/span&gt;&lt;span class=&quot;it&quot;&gt;Item 4&lt;/span&gt;&lt;span class=&quot;it&quot;&gt;Item 5&lt;/span&gt;&lt;/div&gt;
+      &lt;p class=&quot;pg-cap&quot;&gt;flex-wrap: wrap — saltan de línea&lt;/p&gt;
+      &lt;div class=&quot;d wrap&quot;&gt;&lt;span class=&quot;it&quot;&gt;Item 1&lt;/span&gt;&lt;span class=&quot;it&quot;&gt;Item 2&lt;/span&gt;&lt;span class=&quot;it&quot;&gt;Item 3&lt;/span&gt;&lt;span class=&quot;it&quot;&gt;Item 4&lt;/span&gt;&lt;span class=&quot;it&quot;&gt;Item 5&lt;/span&gt;&lt;/div&gt;</code></pre>
+    <p class="pg-lab">CSS</p>
+    <pre><code>.d{ display:flex; gap:10px; background:#fff; border:1px solid #cbd5e1; border-radius:6px; padding:10px; margin-bottom:12px; }
+.nowrap{ flex-wrap:nowrap; }
+.wrap  { flex-wrap:wrap; }
+.it{ background:#db2777; color:#fff; padding:14px 22px; border-radius:6px; font-weight:700; white-space:nowrap; }</code></pre>
+  </div>
+
+  <div class="pg-block">
+    <span class="pg-tag reto">RETO EXTRA</span>
+    <div class="pg-reto">🔥 Reduce el ancho de la ventana con el modo móvil de DevTools y observa cómo en la versión <code>wrap</code> los items se reacomodan en varias filas solos, sin media queries.</div>
+  </div>
+
+  <div class="pg-nav">
+    <a href="04-align-items.html">← Ej 4</a>
+    <a href="06-flex-grow-basis.html">Ej 6 →</a>
+  </div>
+</div>
+</body>
+</html>

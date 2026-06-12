@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¿Qué es CSS Grid?</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  body{font-family:system-ui,Segoe UI,Roboto,sans-serif;margin:0;background:#0f172a;color:#e2e8f0;line-height:1.65}
+  .pg-head{padding:24px 32px;border-bottom:3px solid #38bdf8}
+  .pg-head h1{margin:0 0 4px;font-size:1.5rem}
+  .pg-head p{margin:0;color:#94a3b8}
+  .pg-main{max-width:1000px;margin:0 auto;padding:32px}
+  .pg-block{background:#1e293b;border-radius:12px;padding:24px;margin-bottom:26px;border:1px solid #334155}
+  .pg-block h2{margin-top:0;color:#38bdf8;font-size:1.15rem}
+  .pg-tag{display:inline-block;background:#0ea5e9;color:#082f49;font-size:.72rem;font-weight:800;padding:2px 10px;border-radius:999px;margin-bottom:8px}
+  .pg-tag.con{background:#a855f7;color:#1e0838}
+  .pg-tag.sol{background:#22c55e;color:#052e16}
+  .pg-tag.reto{background:#f59e0b;color:#451a03}
+  .pg-tag.cont{background:#38bdf8;color:#06283b}
+  .pg-tag.item{background:#f472b6;color:#3b0824}
+  .pg-tag.fn{background:#fbbf24;color:#3b2a05}
+  code{background:#0f172a;border:1px solid #334155;padding:1px 6px;border-radius:5px;color:#fbbf24;font-size:.9em}
+  pre{background:#0f172a;border-radius:8px;padding:16px;overflow:auto;border:1px solid #334155}
+  pre code{background:none;border:none;padding:0;color:#e2e8f0;font-size:.86rem;line-height:1.5}
+  .pg-lab{margin:4px 0 4px;color:#7dd3fc;font-weight:700;font-size:.85rem}
+  .pg-reto{border-left:4px solid #f59e0b;background:#422006;padding:12px 16px;border-radius:6px;color:#fde68a}
+  .pg-stage{background:#f1f5f9;color:#0f172a;border-radius:8px;padding:20px}
+  .pg-stage h4{margin:0 0 8px;font-size:.85rem;color:#475569;font-weight:700}
+  .pg-nav{display:flex;justify-content:space-between;margin-top:8px}
+  .pg-nav a{color:#38bdf8;text-decoration:none;font-weight:700}
+  .pg-cap{font-size:.78rem;color:#475569;margin:0 0 4px;font-family:ui-monospace,Menlo,monospace}
+  .pg-key{font-size:.8rem;color:#94a3b8}
+  .prop{background:#0f172a;border:1px solid #334155;border-radius:10px;padding:16px 18px;margin-bottom:14px}
+  .prop .name{font-family:ui-monospace,Menlo,monospace;color:#fbbf24;font-weight:800;font-size:1rem}
+  .prop .badge{font-size:.65rem;font-weight:800;padding:1px 8px;border-radius:999px;margin-left:8px;vertical-align:middle}
+  .prop .badge.c{background:#38bdf8;color:#06283b}
+  .prop .badge.i{background:#f472b6;color:#3b0824}
+  .prop .badge.f{background:#fbbf24;color:#3b2a05}
+  .prop .what{color:#cbd5e1;margin:6px 0 10px;font-size:.92rem}
+  .vrow{display:grid;grid-template-columns:200px 1fr;gap:6px 14px;align-items:start}
+  .vrow .v{font-family:ui-monospace,Menlo,monospace;color:#7dd3fc;font-size:.82rem}
+  .vrow .d{color:#cbd5e1;font-size:.86rem}
+  .vrow .v.def::after{content:" ·def";color:#22c55e;font-size:.7rem}
+  .demo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;background:#fff;border:2px dashed #94a3b8;border-radius:8px;padding:12px}
+  .gi{background:#16a34a;color:#fff;padding:18px;border-radius:6px;text-align:center;font-weight:700}
+  .contenedor{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .item{background:#0ea5e9;color:#fff;padding:20px;border-radius:8px;text-align:center;font-weight:700}
+  @media(max-width:560px){.vrow{grid-template-columns:1fr}}
+
+  .eye-toggle{position:fixed;top:10px;right:10px;z-index:50;background:transparent;border:none;color:#64748b;width:24px;height:24px;padding:0;line-height:1;cursor:pointer;font-size:.85rem;opacity:.45;transition:opacity .15s}
+  .eye-toggle:hover{opacity:1;color:#94a3b8}
+  .next-hidden{display:none !important}
+</style>
+</head>
+<body>
+<button id="eyeBtn" class="eye-toggle" title="Mostrar/ocultar el enlace a la página siguiente" onclick="toggleNext()">👁️</button>
+
+<div class="pg-head">
+  <h1>🟩 ¿Qué es CSS Grid?</h1>
+  <p>El sistema de layout en dos dimensiones · guía completa de propiedades</p>
+</div>
+<div class="pg-main">
+
+  <div class="pg-block">
+    <span class="pg-tag con">DEFINICIÓN</span>
+    <h2>La idea en una frase</h2>
+    <p><strong>CSS Grid</strong> crea <strong>cuadrículas de filas y columnas</strong> al mismo tiempo. Es de <strong>dos dimensiones</strong>: mientras flexbox alinea en una línea, Grid controla ambas a la vez, ideal para la estructura general de una página.</p>
+    <p>Se activa con <code>display:grid</code> en un <strong>contenedor</strong>. Hay propiedades del <span class="pg-tag cont">CONTENEDOR</span>, del <span class="pg-tag item">ITEM</span>, y <span class="pg-tag fn">UNIDADES Y FUNCIONES</span> propias de Grid.</p>
+  </div>
+
+  <div class="pg-block">
+    <span class="pg-tag con">FLEXBOX vs GRID</span>
+    <h2>¿Cuándo uso cada uno?</h2>
+    <p><strong>Flexbox (1D)</strong> → alinear elementos en una sola línea: barras, listas de botones, repartir items en una fila.</p>
+    <p><strong>Grid (2D)</strong> → la estructura general: cabecera + sidebar + contenido + pie, galerías, dashboards. "Pienso en filas Y columnas".</p>
+    <p>En la práctica se combinan: Grid para el esqueleto de la página, Flexbox para los componentes internos.</p>
+  </div>
+
+  <div class="pg-block">
+    <span class="pg-tag con">VOCABULARIO</span>
+    <h2>Palabras clave de la cuadrícula</h2>
+    <p><strong>Grid container</strong> — el padre con <code>display:grid</code>.<br>
+    <strong>Grid items</strong> — los hijos directos.<br>
+    <strong>Track</strong> — una fila o una columna (una "pista").<br>
+    <strong>Línea (line)</strong> — las divisiones numeradas entre tracks (1, 2, 3… y también -1, -2 desde el final), que usas para colocar items.<br>
+    <strong>Celda (cell)</strong> — la intersección de una fila y una columna.<br>
+    <strong>Área (area)</strong> — un grupo de celdas con nombre.</p>
+    <div class="pg-stage">
+      <h4>Cuadrícula 3×2 · las líneas verticales son 1·2·3·4 de izq. a der.</h4>
+      <div class="demo-grid"><span class="gi">1</span><span class="gi">2</span><span class="gi">3</span><span class="gi">4</span><span class="gi">5</span><span class="gi">6</span></div>
+    </div>
+  </div>
+
+  <div class="pg-block">
+    <span class="pg-tag con">UNIDADES DE MEDIDA</span>
+    <h2>¿Qué significa 1fr y las demás medidas?</h2>
+    <p>En Grid (y en CSS en general) defines tamaños con distintas unidades. Estas son las que más vas a usar:</p>
+
+    <div class="prop">
+      <span class="name">fr</span><span class="badge f">la estrella de Grid</span>
+      <p class="what">Significa "fracción" del <strong>espacio sobrante</strong>. Imagina repartir una pizza: <code>1fr 1fr</code> = dos porciones iguales; <code>2fr 1fr</code> = una porción doble y una sencilla. Es flexible: si la ventana crece, las columnas crecen con ella.</p>
+      <div class="vrow">
+        <span class="v">1fr 1fr 1fr</span><span class="d">3 columnas iguales (cada una toma 1/3 del espacio).</span>
+        <span class="v">2fr 1fr</span><span class="d">La primera ocupa el doble: 2/3 y 1/3.</span>
+        <span class="v">200px 1fr</span><span class="d">200px fijos + el resto del espacio para la otra columna.</span>
+      </div>
+    </div>
+
+    <div class="prop">
+      <span class="name">px (píxeles)</span><span class="badge f">tamaño fijo</span>
+      <p class="what">Un tamaño exacto que NO cambia con la pantalla. Útil para barras laterales o anchos concretos.</p>
+      <div class="vrow"><span class="v">150px</span><span class="d">Siempre mide 150 píxeles.</span></div>
+    </div>
+
+    <div class="prop">
+      <span class="name">% (porcentaje)</span><span class="badge f">relativo al contenedor</span>
+      <p class="what">Un porcentaje del tamaño del contenedor padre. Se adapta, pero no reparte el sobrante como <code>fr</code>.</p>
+      <div class="vrow"><span class="v">50%</span><span class="d">La mitad del ancho del contenedor.</span></div>
+    </div>
+
+    <div class="prop">
+      <span class="name">auto</span><span class="badge f">según el contenido</span>
+      <p class="what">El track se ajusta a lo que contiene: tan ancho/alto como necesite su contenido.</p>
+      <div class="vrow"><span class="v">auto 1fr auto</span><span class="d">Cabecera y pie según su contenido; el centro toma el resto.</span></div>
+    </div>
+
+    <div class="prop">
+      <span class="name">em / rem</span><span class="badge f">relativo a la fuente</span>
+      <p class="what">Tamaños que escalan con la tipografía. <code>rem</code> se basa en la fuente raíz (la del &lt;html&gt;); <code>em</code> en la del elemento.</p>
+      <div class="vrow"><span class="v">1rem ≈ 16px</span><span class="d">Si la fuente base es 16px. 2rem ≈ 32px.</span></div>
+    </div>
+
+    <div class="prop">
+      <span class="name">min-content / max-content</span><span class="badge f">según el texto</span>
+      <p class="what">Tamaños basados en el contenido del track.</p>
+      <div class="vrow">
+        <span class="v">min-content</span><span class="d">Lo más estrecho posible sin desbordar (el ancho de la palabra más larga).</span>
+        <span class="v">max-content</span><span class="d">Lo más ancho que pida el contenido, sin cortar líneas.</span>
+      </div>
+    </div>
+
+    <div class="prop">
+      <span class="name">vw / vh</span><span class="badge f">relativo a la ventana</span>
+      <p class="what">Porcentaje del ancho (vw) o alto (vh) de la ventana del navegador. Útil para secciones a pantalla completa.</p>
+      <div class="vrow"><span class="v">100vh</span><span class="d">Todo el alto visible de la pantalla.</span></div>
+    </div>
+
+    <p class="pg-key" style="margin-top:10px">💡 Regla práctica: usa <code>fr</code> para columnas flexibles, <code>px</code> para tamaños fijos (sidebars), y combínalos con <code>minmax()</code> para que sean responsive (lo ves en el Ejercicio 8).</p>
+  </div>
+
+  <div class="pg-block">
+    <span class="pg-tag cont">PROPIEDADES DEL CONTENEDOR</span>
+    <h2>Van en el padre (display:grid)</h2>
+
+    <div class="prop">
+      <span class="name">display</span><span class="badge c">contenedor</span>
+      <p class="what">Activa Grid. Sus hijos directos se colocan en la cuadrícula.</p>
+      <div class="vrow">
+        <span class="v">grid</span><span class="d">El contenedor se comporta como bloque.</span>
+        <span class="v">inline-grid</span><span class="d">El contenedor fluye como inline.</span>
+      </div>
+    </div>
+
+    <div class="prop">
+      <span class="name">grid-template-columns</span><span class="badge c">contenedor</span>
+      <p class="what">Define cuántas columnas hay y el ancho de cada una. <span class="pg-key">Ej 1, 2</span></p>
+      <div class="vrow">
+        <span class="v">150px 150px</span><span class="d">2 columnas de ancho fijo.</span>
+        <span class="v">1fr 1fr 1fr</span><span class="d">3 columnas que se reparten el espacio por igual.</span>
+        <span class="v">2fr 1fr</span><span class="d">La primera al doble de ancho que la segunda.</span>
+        <span class="v">repeat(3, 1fr)</span><span class="d">Atajo para 3 columnas iguales.</span>
+        <span class="v">200px 1fr</span><span class="d">Mezcla: barra fija + contenido flexible.</span>
+      </div>
+    </div>
+
+    <div class="prop">
+      <span class="name">grid-template-rows</span><span class="badge c">contenedor</span>
+      <p class="what">Igual que columns, pero para las filas (alto de cada una). <span class="pg-key">Ej 3</span></p>
+      <div class="vrow">
+        <span class="v">100px 200px</span><span class="d">Fila 1 de 100px, fila 2 de 200px.</span>
+        <span class="v">auto 1fr auto</span><span class="d">Cabecera y pie según contenido, centro ocupa el resto.</span>
+      </div>
+    </div>
+
+    <div class="prop">
+      <span class="name">gap</span><span class="badge c">contenedor</span>
+      <p class="what">Espacio entre celdas. <span class="pg-key">Ej 3</span></p>
+      <div class="vrow">
+        <span class="v">gap: 12px</span><span class="d">Mismo espacio entre filas y columnas.</span>
+        <span class="v">row-gap / column-gap</span><span class="d">Controlar por separado el espacio vertical / horizontal.</span>
+      </div>
+    </div>
+
+    <div class="prop">
+      <span class="name">grid-template-areas</span><span class="badge c">contenedor</span>
+      <p class="what">Maqueta dibujando la estructura con nombres. Cada string es una fila; cada palabra, una celda. <span class="pg-key">Ej 5</span></p>
+      <div class="vrow">
+        <span class="v">"head head"</span><span class="d">El nombre "head" repetido = esa zona ocupa 2 columnas.</span>
+        <span class="v">"side main"</span><span class="d">Dos zonas distintas en la misma fila.</span>
+        <span class="v">"." (punto)</span><span class="d">Deja una celda vacía.</span>
+      </div>
+    </div>
+
+    <div class="prop">
+      <span class="name">grid-auto-rows / grid-auto-columns</span><span class="badge c">contenedor</span>
+      <p class="what">Tamaño de las filas/columnas creadas automáticamente (las que no definiste). <span class="pg-key">Ej 4, 9</span></p>
+      <div class="vrow">
+        <span class="v">grid-auto-rows: 80px</span><span class="d">Toda fila nueva mide 80px de alto.</span>
+      </div>
+    </div>
+
+    <div class="prop">
+      <span class="name">grid-auto-flow</span><span class="badge c">contenedor</span>
+      <p class="what">Cómo se colocan los items que no ubicaste manualmente.</p>
+      <div class="vrow">
+        <span class="v def">row</span><span class="d">Rellena por filas (izq→der, luego baja).</span>
+        <span class="v">column</span><span class="d">Rellena por columnas (arriba→abajo, luego a la derecha).</span>
+        <span class="v">dense</span><span class="d">Rellena los huecos que dejaron items grandes.</span>
+      </div>
+    </div>
+
+    <div class="prop">
+      <span class="name">justify-items / align-items</span><span class="badge c">contenedor</span>
+      <p class="what">Alinean el contenido DENTRO de cada celda (horizontal / vertical). Atajo: <code>place-items</code>. <span class="pg-key">Ej 6</span></p>
+      <div class="vrow">
+        <span class="v def">stretch</span><span class="d">El contenido llena la celda.</span>
+        <span class="v">start / center / end</span><span class="d">Lo pega al inicio / centro / final de la celda.</span>
+        <span class="v">place-items: center</span><span class="d">Centra en ambos ejes de la celda.</span>
+      </div>
+    </div>
+
+    <div class="prop">
+      <span class="name">justify-content / align-content</span><span class="badge c">contenedor</span>
+      <p class="what">Mueven la REJILLA COMPLETA dentro del contenedor (cuando es más pequeña que él). Atajo: <code>place-content</code>. <span class="pg-key">Ej 7</span></p>
+      <div class="vrow">
+        <span class="v">start / center / end</span><span class="d">Posiciona toda la cuadrícula.</span>
+        <span class="v">space-between / around / evenly</span><span class="d">Reparte el espacio sobrante entre los tracks.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pg-block">
+    <span class="pg-tag item">PROPIEDADES DEL ITEM</span>
+    <h2>Van en cada hijo</h2>
+
+    <div class="prop">
+      <span class="name">grid-column</span><span class="badge i">item</span>
+      <p class="what">En qué columnas se extiende el item (usando líneas o span). <span class="pg-key">Ej 4</span></p>
+      <div class="vrow">
+        <span class="v">1 / 3</span><span class="d">De la línea 1 a la 3 (ocupa 2 columnas).</span>
+        <span class="v">span 2</span><span class="d">Ocupa 2 columnas desde donde esté.</span>
+        <span class="v">1 / -1</span><span class="d">De la primera a la última línea: ocupa TODO el ancho.</span>
+      </div>
+    </div>
+
+    <div class="prop">
+      <span class="name">grid-row</span><span class="badge i">item</span>
+      <p class="what">En qué filas se extiende el item. <span class="pg-key">Ej 4</span></p>
+      <div class="vrow">
+        <span class="v">1 / 3</span><span class="d">De la fila 1 a la 3 (ocupa 2 filas).</span>
+        <span class="v">span 2</span><span class="d">Ocupa 2 filas (elemento "alto").</span>
+      </div>
+    </div>
+
+    <div class="prop">
+      <span class="name">grid-area</span><span class="badge i">item</span>
+      <p class="what">Asigna el item a un área con nombre (de grid-template-areas) o a líneas exactas. <span class="pg-key">Ej 5</span></p>
+      <div class="vrow">
+        <span class="v">grid-area: head</span><span class="d">Coloca el item en la zona llamada "head".</span>
+        <span class="v">2 / 1 / 3 / 3</span><span class="d">row-start / col-start / row-end / col-end.</span>
+      </div>
+    </div>
+
+    <div class="prop">
+      <span class="name">justify-self / align-self</span><span class="badge i">item</span>
+      <p class="what">Alinea SOLO a ese item dentro de su celda. Atajo: <code>place-self</code>.</p>
+      <div class="vrow">
+        <span class="v">start / center / end / stretch</span><span class="d">Posición horizontal (justify) o vertical (align) en su celda.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pg-block">
+    <span class="pg-tag fn">UNIDADES Y FUNCIONES</span>
+    <h2>El "idioma" de los tamaños en Grid</h2>
+
+    <div class="prop">
+      <span class="name">fr</span><span class="badge f">unidad</span>
+      <p class="what">Una "fracción" del espacio disponible. Es lo que hace a Grid flexible. <span class="pg-key">Ej 2</span></p>
+      <div class="vrow">
+        <span class="v">1fr 1fr</span><span class="d">Dos columnas que se reparten el espacio mitad y mitad.</span>
+        <span class="v">3fr 1fr</span><span class="d">Tres cuartos y un cuarto del espacio.</span>
+      </div>
+    </div>
+
+    <div class="prop">
+      <span class="name">repeat()</span><span class="badge f">función</span>
+      <p class="what">Repite un patrón de tracks sin escribirlo varias veces. <span class="pg-key">Ej 2, 8</span></p>
+      <div class="vrow">
+        <span class="v">repeat(4, 1fr)</span><span class="d">= 1fr 1fr 1fr 1fr.</span>
+        <span class="v">repeat(auto-fit, …)</span><span class="d">El navegador calcula cuántas columnas caben.</span>
+      </div>
+    </div>
+
+    <div class="prop">
+      <span class="name">minmax()</span><span class="badge f">función</span>
+      <p class="what">Un tamaño que nunca baja del mínimo ni supera el máximo. <span class="pg-key">Ej 8</span></p>
+      <div class="vrow">
+        <span class="v">minmax(200px, 1fr)</span><span class="d">"Al menos 200px, pero crece si hay espacio".</span>
+      </div>
+    </div>
+
+    <div class="prop">
+      <span class="name">auto-fit / auto-fill</span><span class="badge f">palabra clave</span>
+      <p class="what">Dentro de repeat(), crean columnas responsive automáticas. <span class="pg-key">Ej 8</span></p>
+      <div class="vrow">
+        <span class="v">auto-fit</span><span class="d">Estira los items para llenar el ancho (no deja columnas vacías).</span>
+        <span class="v">auto-fill</span><span class="d">Reserva columnas vacías aunque no haya items.</span>
+      </div>
+    </div>
+
+    <div class="prop">
+      <span class="name">auto · min-content · max-content</span><span class="badge f">tamaños</span>
+      <p class="what">Tamaños basados en el contenido.</p>
+      <div class="vrow">
+        <span class="v">auto</span><span class="d">El track se ajusta a su contenido.</span>
+        <span class="v">min-content</span><span class="d">Lo más estrecho posible sin desbordar (ej. la palabra más larga).</span>
+        <span class="v">max-content</span><span class="d">Lo más ancho que pida el contenido, sin cortar.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pg-block">
+    <span class="pg-tag sol">MINI DEMO</span>
+    <h2>El "hola mundo" de Grid</h2>
+    <p class="pg-lab">HTML</p>
+    <pre><code>&lt;div class=&quot;contenedor&quot;&gt;
+  &lt;div class=&quot;item&quot;&gt;1&lt;/div&gt;
+  &lt;div class=&quot;item&quot;&gt;2&lt;/div&gt;
+  &lt;div class=&quot;item&quot;&gt;3&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    <p class="pg-lab">CSS</p>
+    <pre><code>.contenedor{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columnas iguales */
+  gap: 12px;
+}</code></pre>
+    <div class="pg-stage" style="margin-top:12px">
+      <div class="contenedor"><div class="item">1</div><div class="item">2</div><div class="item">3</div></div>
+    </div>
+  </div>
+
+  <div class="pg-block">
+    <span class="pg-tag reto">CÓMO SEGUIR</span>
+    <div class="pg-reto">👉 Con este mapa de propiedades, unidades y funciones ya tienes el panorama completo. Abre el <strong>Ejercicio 1</strong> y avanza hasta el 10 (dashboard final). En DevTools (F12), al seleccionar un contenedor grid aparece un botón <code>grid</code> que dibuja las líneas sobre la página: úsalo para enseñar en vivo.</div>
+    <div class="pg-nav"><a href="index.html">← Índice</a><a id="nextLink" href="01-display-grid.html">Ej 1: display:grid →</a></div>
+  </div>
+</div>
+<script>
+(function(){
+  var KEY='intro-next-hidden';
+  var link=document.getElementById('nextLink');
+  var btn=document.getElementById('eyeBtn');
+  function apply(h){ if(link) link.classList.toggle('next-hidden',h); btn.textContent=h?'🙈':'👁️'; btn.title=h?'Mostrar enlace a la página siguiente':'Ocultar enlace a la página siguiente'; }
+  var hidden=localStorage.getItem(KEY)==='1';
+  apply(hidden);
+  window.toggleNext=function(){ hidden=!hidden; localStorage.setItem(KEY,hidden?'1':'0'); apply(hidden); };
+})();
+</script>
+</body>
+</html>
