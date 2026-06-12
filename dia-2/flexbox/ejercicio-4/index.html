@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ejercicio 3</title>
+        <style>
+        .contenedor {
+            display: flex;
+            gap: 8px;
+            height:100px;
+            border:1px solid #cbd5e1; 
+            border-radius:6px;
+            margin-bottom: 5px;
+        }
+        .ai-stretch{ align-items:stretch; }
+        .ai-start{ align-items:flex-start; }
+        .ai-center{ align-items:center; }
+        .ai-end{ align-items:flex-end; }
+      
+        .item {
+            background:#16a34a;
+            color:#fff;
+            padding:18px;
+            border-radius:8px;
+            font-weight:700;
+            text-align:center; 
+        }
+    </style>
+    </head>
+    <body>
+
+        <div class="contenedor ai-stretch">
+            <div class="item"> A</div>
+            <div class="item"> B</div>
+            <div class="item"> C</div>
+        </div>
+
+        <div class="contenedor ai-start">
+            <div class="item"> A</div>
+            <div class="item"> B</div>
+            <div class="item"> C</div>
+        </div>
+
+        <div class="contenedor ai-center">
+            <div class="item"> A</div>
+            <div class="item"> B</div>
+            <div class="item"> C</div>
+        </div>
+
+        <div class="contenedor ai-end">
+            <div class="item"> A</div>
+            <div class="item"> B</div>
+            <div class="item"> C</div>
+        </div>
+
+
+    </body>
+</html>

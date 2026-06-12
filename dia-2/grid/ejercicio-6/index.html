@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ejercicio 5</title>
+        <style>
+            .contenedor{
+               display:grid; 
+               grid-template-columns: repeat(3,1fr); 
+               gap:10px; 
+               height:90px; 
+               background:#fff; 
+               border:1px solid #cbd5e1; 
+               border-radius:8px; 
+               padding:8px; 
+               margin-bottom:12px; 
+            }
+            .stretch { place-items:stretch; }
+            .i-center { place-items:center; }
+            .i-end { justify-items:end; align-items:start; }
+            .item { 
+                background:#2563eb; 
+                color:#fff; 
+                padding:10px 14px; 
+                border-radius:6px; 
+                font-weight:700; }
+        </style>
+    </head>
+    <body>
+
+        <div class="contenedor stretch">
+            <div class="item"> A</div>
+            <div class="item"> B</div>
+            <div class="item"> C</div>
+        </div>
+
+         <div class="contenedor i-center">
+            <div class="item"> A</div>
+            <div class="item"> B</div>
+            <div class="item"> C</div>
+        </div>
+        <div class="contenedor i-end">
+            <div class="item"> A</div>
+            <div class="item"> B</div>
+            <div class="item"> C</div>
+        </div>
+    </body>
+</html>

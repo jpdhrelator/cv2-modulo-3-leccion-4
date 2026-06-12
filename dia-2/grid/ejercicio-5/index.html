@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ejercicio 5</title>
+        <style>
+            .layout{
+                display:grid;
+                grid-template-columns: 160px 1fr;
+                grid-template-rows: auto 200px auto;
+                gap:10px;
+                grid-template-areas:
+                    "head head"
+                    "side main"
+                    "foot foot";
+            }
+            .zona{ color:#fff; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:700; }
+            .head{ 
+                grid-area: head;
+                background:#1e293b; 
+             }
+             .side{ 
+                grid-area: side;
+                background:#7c3aed; 
+            } 
+             .main{ 
+                grid-area: main;
+                background:#0ea5e9; 
+            } 
+             .foot{ 
+                background:#334155; 
+                grid-area: foot; 
+            }
+    
+        </style>
+    </head>
+    <body>
+
+        <div class="layout">
+            <header class="zona head">header</header>
+            <aside class="zona side">sidebar</aside>
+            <main class="zona main">main</main>
+            <footer class="zona foot">footer</footer>
+        </div>
+
+    </body>
+</html>

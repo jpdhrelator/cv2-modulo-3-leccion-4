@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ejercicio 5</title>
+        <style>
+            .contenedor{
+               display:grid; 
+               grid-template-columns: 70px 70px 70px; 
+               gap:8px; 
+               background:#fff; 
+               border:1px solid #cbd5e1; 
+               border-radius:8px; 
+               padding:8px; 
+               margin-bottom:12px; 
+            }
+            .s{ justify-content:start; }
+            .c{ justify-content:center; }
+            .b{ justify-content:space-between; }
+            .item { 
+                background:#16a34a; 
+                color:#fff; 
+                padding:10px 14px; 
+                border-radius:6px; 
+                font-weight:700; }
+        </style>
+    </head>
+    <body>
+
+        <div class="contenedor s">
+            <div class="item"> A</div>
+            <div class="item"> B</div>
+            <div class="item"> C</div>
+        </div>
+
+         <div class="contenedor c">
+            <div class="item"> A</div>
+            <div class="item"> B</div>
+            <div class="item"> C</div>
+        </div>
+        <div class="contenedor b">
+            <div class="item"> A</div>
+            <div class="item"> B</div>
+            <div class="item"> C</div>
+        </div>
+    </body>
+</html>
